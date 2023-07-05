@@ -3,7 +3,7 @@ name: Update BiteTheDisk website
 on:
   push:
     branches:
-      - hugo
+      - master
 
 permissions:
   contents: write
@@ -16,7 +16,7 @@ jobs:
       - name: Check out source code on branch hugo
         uses: actions/checkout@v3
         with:
-          ref: hugo
+          ref: master
           submodules: recursive # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0 # Fetch all history for .GitInfo and .Lastmod
       - name: Setup Hugo
@@ -29,6 +29,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: master # Page 仓库的分支
+          publish_branch: gh-pages # Page 仓库的分支
           publish_dir: ./public # 静态网页路径
           commit_message: ${{ github.event.head_commit.message }}
