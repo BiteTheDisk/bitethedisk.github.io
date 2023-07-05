@@ -1,7 +1,7 @@
 ---
-title: "有关 BTD 的 Makefile"
+title: "[区域赛] 有关 BTD 的 Makefile"
 date: 2023-06-30T18:37:11+08:00
-tags: ["Makefile", "Debug"]
+tags: ["Makefile", "Debug", "区域赛"]
 draft: false
 ---
 
