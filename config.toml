@@ -36,7 +36,7 @@ subTitle = "BiteTheDisk OS kernel 开发小记"
 defaultTheme = "auto"              # default theme when first visit (auto|dark|light)
 
 # Source URL of the website, will appear in the footer
-sourceURL = "https://github.com/BiteTheDisk/bitethedisk.github.io/tree/hugo"
+sourceURL = "https://github.com/BiteTheDisk/bitethedisk.github.io"
 
 # Use CloudFlare Workers to accelerate the Google Analytics
 # If you are using this please comment the googleAnalytics above
@@ -61,7 +61,7 @@ showLicense = true
 showToc = true
 
 # Copyright
-copyrightStartYear = "2020"
+copyrightStartYear = "2023"
 
 # Open Graph & Twitter Card variables
 # You can also set description and images in post front matter individually
