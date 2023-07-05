@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/</link>
+    <description>Recent content on BiteTheDisk 小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 30 Jun 2023 18:37:11 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>有关 BTD 的 Makefile</title>
+      <link>https://bitethedisk.github.io/post/about-makefile/</link>
+      <pubDate>Fri, 30 Jun 2023 18:37:11 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/about-makefile/</guid>
+      <description>&lt;p&gt;项目提供了一系列的 Makefile 来简化开发流程.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>开发中如调试内核</title>
+      <link>https://bitethedisk.github.io/post/how-to-debug-the-kernel/</link>
+      <pubDate>Fri, 30 Jun 2023 18:34:54 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/how-to-debug-the-kernel/</guid>
+      <description>&lt;p&gt;在 BTD 的开发中经常会遇到 debug 的需求，BTD 提供了一个方便的调试流程，只需启动两个 shell 即可
+开始调试&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[已解决]内核在执行用户程序时随机卡死</title>
+      <link>https://bitethedisk.github.io/post/random-stuck/</link>
+      <pubDate>Thu, 29 Jun 2023 21:42:09 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/random-stuck/</guid>
+      <description>&lt;p&gt;内核在运行的时候总是会不知何时卡死，底层原因是持续触发时钟中断&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于我们</title>
+      <link>https://bitethedisk.github.io/about/</link>
+      <pubDate>Sat, 11 Apr 2020 19:15:32 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/about/</guid>
+      <description>BTD OS 是使用 Rust 语言开发的宏内核操作系统，可运行于 RISC-V64 平台，并实现了中断与异常处理、进 程管理、内存管理以及文件系统等操作系统基本模块。目前，BTD OS 支持在 QEMU 虚拟环境中运行。 BTD OS 的总体目标是设计一款简洁小巧、</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.115.1">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon-16x16.png" />
+<link rel="manifest" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/site.webmanifest" />
+<link rel="mask-icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/safari-pinned-tab.svg" color="#8aa2d3" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+<meta name="theme-color" content="#ffffff" />
+
+
+<title>开发中如调试内核 - BiteTheDisk 小站</title>
+
+
+<meta name="author" content="BiteTheDisk" />
+
+
+<meta name="description" content="A minimal Hugo theme with nice theme color." />
+
+
+<meta name="keywords" content="OSKernel, Debug" />
+
+
+<meta property="og:title" content="开发中如调试内核" />
+<meta name="twitter:title" content="开发中如调试内核" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/how-to-debug-the-kernel/" /><meta property="og:description" content="在 BTD 的开发中经常会遇到 debug 的需求，BTD 提供了一个方便的调试流程，只需启动两个 shell 即可
+开始调试" />
+<meta name="twitter:description" content="在 BTD 的开发中经常会遇到 debug 的需求，BTD 提供了一个方便的调试流程，只需启动两个 shell 即可
+开始调试" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-06-30T18:34:54+08:00" /><meta property="article:modified_time" content="2023-06-30T18:34:54+08:00" />
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+
+
+<link rel="stylesheet" href="https://bitethedisk.github.io/assets/css/fuji.min.b4a21b5d3eb1d0a51297e31230a65fc25e387843e45ec3a2d9176cd8d163c216d99b9b13a618b28f537c3b559ec8a408183b0fbfad48daddb9befa7d3ef90eed.css" integrity="sha512-tKIbXT6x0KUSl&#43;MSMKZfwl44eEPkXsOi2Rds2NFjwhbZm5sTphiyj1N8O1WeyKQIGDsPv61I2t25vvp9PvkO7Q==" />
+
+
+
+
+
+
+
+
+</head>
+
+<body
+  data-theme="auto"
+  data-theme-auto='true'
+  >
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://bitethedisk.github.io/">BiteTheDisk 小站</a>
+            
+            <span class="title-sub">BiteTheDisk OS kernel 开发小记</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/how-to-debug-the-kernel/">开发中如调试内核</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;396 words</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/oskernel">OSKernel</a>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;</span>
+
+    </div>
+    
+    <div class="post-content markdown-body">
+        <p>在 BTD 的开发中经常会遇到 debug 的需求，BTD 提供了一个方便的调试流程，只需启动两个 shell 即可
+开始调试</p>
+<p>下面将演示一次具体的调试流程</p>
+<ol>
+<li>启动两个 shell，在项目根目录下分别运行 <code>make debug-server</code> 和 <code>make debug</code>，
+之后只需要在运行 <code>make debug</code> 的 shell 中执行接下来的命令即可</li>
+</ol>
+<pre><code class="language-bash"># 从当前 pc 开始显示 11 条指令，11 条是不发生折叠的极限（也可能只是我这是这样）
+(gdb) x/11i $pc
+</code></pre>
+<p><img class="img-zoomable" src="/imgs/qemu-boot.bmp" alt="qemu-boot" />
+</p>
+<pre><code class="language-bash">(gdb) b *0x80000000 # 在内核第一条指令处打个断点
+(gdb) c             # continue 执行到断点处
+</code></pre>
+<p><img class="img-zoomable" src="/imgs/_entry.bmp" alt="_entry" />
+</p>
+<pre><code class="language-bash">(gdb) si # si 单步执行 (step in，会嵌入函数具体流程中)
+</code></pre>
+<p>需要注意的是，在多核运行时，代码执行过程中会出现系统线程的切换，例如下面这样：</p>
+<pre><code class="language-bash">(gdb) c
+Continuing.
+[Switching to Thread 1.2]
+</code></pre>
+<p>这时候我们要看当前线程的状态，根据当前状态进行调试，该打断点的地方不要忘了打断点，不然会跑飞</p>
+<p>像是这样，只能用 Ctrl + C 来掐死 (主要是我也没去找其他可能的方法 😛):</p>
+<p><img class="img-zoomable" src="/imgs/ctrl-c.bmp" alt="ctrl-c" />
+</p>
+<p>看到地址了吗，直接归零，而且这块地址是不可访问的，只能卡在这了，除非扬了当前的 shell 重来（大概</p>
+<pre><code class="language-bash">Thread 2 received signal SIGINT, Interrupt.
+0x0000000000000000 in ?? ()
+(gdb) x/11i $pc
+=&gt; 0x0: Cannot access memory at address 0x0
+(gdb)
+</code></pre>
+    </div>
+</article>
+
+
+<div class="license markdown-body">
+    <blockquote>
+        <p>Unless otherwise noted, the content of this site is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+               target="_blank">CC BY-NC-SA 4.0</a>.</p>
+    </blockquote>
+</div>
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>Pages</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/archives/">归档</a>
+            </li>
+            
+            <li>
+                <a href="/about/">关于</a>
+            </li>
+            
+            <li>
+                <a href="/search/">站内搜索</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-links">
+        <h3>Links</h3>
+        <ul>
+            
+            <li>
+                <a href="https://github.com/BiteTheDisk" target="_blank"><span>GitHub</span></a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-tags">
+        <h3>Tags</h3>
+        <div>
+            
+            <span>
+                <a href="/tags/debug/">Debug</a>
+            </span>
+            
+            <span>
+                <a href="/tags/makefile/">Makefile</a>
+            </span>
+            
+            <span>
+                <a href="/tags/oskernel/">OSKernel</a>
+            </span>
+            
+            <span>
+                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
+            </span>
+            
+        </div>
+    </div>
+    <div class="sidebar-item sidebar-toc">
+        <h3>Table of Contents</h3><nav id="TableOfContents"></nav></div>
+</aside>
+
+        </div>
+        <div class="btn">
+    <div class="btn-menu" id="btn-menu">
+        <i class="iconfont icon-grid-sharp"></i>
+    </div>
+    <div class="btn-toggle-mode">
+        <i class="iconfont icon-contrast-sharp"></i>
+    </div>
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+<aside class="sidebar-mobile" style="display: none;">
+  <div class="sidebar-wrapper">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>Pages</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/archives/">归档</a>
+            </li>
+            
+            <li>
+                <a href="/about/">关于</a>
+            </li>
+            
+            <li>
+                <a href="/search/">站内搜索</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-links">
+        <h3>Links</h3>
+        <ul>
+            
+            <li>
+                <a href="https://github.com/BiteTheDisk" target="_blank"><span>GitHub</span></a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-tags">
+        <h3>Tags</h3>
+        <div>
+            
+            <span>
+                <a href="/tags/debug/">Debug</a>
+            </span>
+            
+            <span>
+                <a href="/tags/makefile/">Makefile</a>
+            </span>
+            
+            <span>
+                <a href="/tags/oskernel/">OSKernel</a>
+            </span>
+            
+            <span>
+                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
+            </span>
+            
+        </div>
+    </div>
+    
+    
+    
+    <div class="sidebar-item sidebar-toc">
+        <h3>Table of Contents</h3>
+        <nav id="TableOfContents"></nav>
+    </div>
+    
+    
+  </div>
+</aside>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            
+            <span>&copy; 2020-2023
+                <a href="https://bitethedisk.github.io/">BiteTheDisk</a>
+                 | <a href="https://github.com/BiteTheDisk/bitethedisk.github.io/tree/hugo">Source code</a> 
+                | Powered by <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> &amp; <a href="https://gohugo.io/"
+                                                    target="_blank">Hugo</a> 
+            </span>
+        </div>
+    </div>
+</footer>
+
+    
+<script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha512-N9IJRoc3LaP3NDoiGkcPa4gG94kapGpaA5Zq9/Dr04uf5TbLFU5q0o8AbRhLKUUlp8QFS2u7S+Yti0U7QtuZvQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-core.min.js" integrity="sha512-LCKPTo0gtJ74zCNMbWw04ltmujpzSR4oW+fgN+Y1YclhM5ZrHCZQAJE4quEodcI/G122sRhSGU2BsSRUZ2Gu3w==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-GP4x8UWxWyh4BMbyJGOGneiTbkrWEF5izsVJByzVLodP8CuJH/n936+yQDMJJrOPUHLgyPbLiGw2rXmdvGdXHA==" crossorigin="anonymous"></script>
+
+
+
+<script defer src="/assets/js/fuji.min.645f1123be695831f419ab54c1bcba327325895c740014006e57070d4f3e5d6b553e929c4b46f40ea707249e9c7f7c2a446d32a39ce7319f80a34525586a8e0f.js" integrity="sha512-ZF8RI75pWDH0GatUwby6MnMliVx0ABQAblcHDU8&#43;XWtVPpKcS0b0DqcHJJ6cf3wqRG0yo5znMZ&#43;Ao0UlWGqODw=="></script>
+
+
+
+</body>
+
+</html>
