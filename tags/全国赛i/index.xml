@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on BiteTheDisk 小站</title>
-    <link>https://bitethedisk.github.io/post/</link>
-    <description>Recent content in Posts on BiteTheDisk 小站</description>
+    <title>全国赛I&#34; on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/</link>
+    <description>Recent content in 全国赛I&#34; on BiteTheDisk 小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Aug 2023 18:37:11 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Aug 2023 18:37:11 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[全国赛I] busybox 预加载</title>
       <link>https://bitethedisk.github.io/post/busybox-pre-init/</link>
@@ -32,34 +32,6 @@
       
       <guid>https://bitethedisk.github.io/post/process-thread/</guid>
       <description>进程管理-进程与线程 TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct</description>
-    </item>
-    
-    <item>
-      <title>[区域赛] 有关 BTD 的 Makefile</title>
-      <link>https://bitethedisk.github.io/post/about-makefile/</link>
-      <pubDate>Fri, 30 Jun 2023 18:37:11 +0800</pubDate>
-      
-      <guid>https://bitethedisk.github.io/post/about-makefile/</guid>
-      <description>&lt;p&gt;项目提供了一系列的 Makefile 来简化开发流程.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>开发中如调试内核</title>
-      <link>https://bitethedisk.github.io/post/how-to-debug-the-kernel/</link>
-      <pubDate>Fri, 30 Jun 2023 18:34:54 +0800</pubDate>
-      
-      <guid>https://bitethedisk.github.io/post/how-to-debug-the-kernel/</guid>
-      <description>&lt;p&gt;在 BTD 的开发中经常会遇到 debug 的需求，BTD 提供了一个方便的调试流程，只需启动两个 shell 即可
-开始调试&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>[已解决]内核在执行用户程序时随机卡死</title>
-      <link>https://bitethedisk.github.io/post/random-stuck/</link>
-      <pubDate>Thu, 29 Jun 2023 21:42:09 +0800</pubDate>
-      
-      <guid>https://bitethedisk.github.io/post/random-stuck/</guid>
-      <description>&lt;p&gt;内核在运行的时候总是会不知何时卡死，底层原因是持续触发时钟中断&lt;/p&gt;</description>
     </item>
     
   </channel>
