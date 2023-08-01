@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.111.3">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon-16x16.png" />
+<link rel="manifest" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/site.webmanifest" />
+<link rel="mask-icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/safari-pinned-tab.svg" color="#8aa2d3" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+<meta name="theme-color" content="#ffffff" />
+
+
+<title>[全国赛I] 进程管理-进程与线程 - BiteTheDisk 小站</title>
+
+
+<meta name="author" content="BiteTheDisk" />
+
+
+<meta name="description" content="A minimal Hugo theme with nice theme color." />
+
+
+<meta name="keywords" content="process, thread, 全国赛I&#34;" />
+
+
+<meta property="og:title" content="[全国赛I] 进程管理-进程与线程" />
+<meta name="twitter:title" content="[全国赛I] 进程管理-进程与线程" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/process-thread/" /><meta property="og:description" content="进程管理-进程与线程 TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct" />
+<meta name="twitter:description" content="进程管理-进程与线程 TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-01T18:37:11+08:00" /><meta property="article:modified_time" content="2023-08-01T18:37:11+08:00" />
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+
+
+<link rel="stylesheet" href="https://bitethedisk.github.io/assets/css/fuji.min.b4a21b5d3eb1d0a51297e31230a65fc25e387843e45ec3a2d9176cd8d163c216d99b9b13a618b28f537c3b559ec8a408183b0fbfad48daddb9befa7d3ef90eed.css" integrity="sha512-tKIbXT6x0KUSl&#43;MSMKZfwl44eEPkXsOi2Rds2NFjwhbZm5sTphiyj1N8O1WeyKQIGDsPv61I2t25vvp9PvkO7Q==" />
+
+
+
+
+
+
+
+
+</head>
+
+<body
+  data-theme="auto"
+  data-theme-auto='true'
+  >
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://bitethedisk.github.io/">BiteTheDisk 小站</a>
+            
+            <span class="title-sub">BiteTheDisk OS kernel 开发小记</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/process-thread/">[全国赛I] 进程管理-进程与线程</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1360 words</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/process">process</a>&nbsp;<a href="/tags/thread">thread</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I&#34;</a>&nbsp;</span>
+
+    </div>
+    
+    <div class="post-content markdown-body">
+        <h1 id="进程管理-进程与线程">进程管理-进程与线程</h1>
+<h3 id="tcb-与-fork-的更改">TCB 与 fork 的更改</h3>
+<p>相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。</p>
+<pre><code class="language-rust">// kernel/task/task.rs
+
+pub struct TaskControlBlock {
+	...
+    pub sigactions: Arc&lt;RwLock&lt;[SigAction; MAX_SIGNUM as usize]&gt;&gt;,
+    pub memory_set: Arc&lt;RwLock&lt;MemorySet&gt;&gt;,
+    pub fd_table: Arc&lt;RwLock&lt;FDTable&gt;&gt;,
+    pub robust_list: Arc&lt;RwLock&lt;RobustList&gt;&gt;,
+    pub rlimit_nofile: Arc&lt;RwLock&lt;RLimit&gt;&gt;,
+    inner: RwLock&lt;TaskControlBlockInner&gt;,
+}
+
+pub struct TaskControlBlockInner {
+	...
+    pub pending_signals: SigSet,
+    pub sigmask: SigMask,
+    pub interval_timer: Option&lt;IntervalTimer&gt;,
+    pub utime: TimeVal,
+    pub stime: TimeVal,
+    pub last_enter_umode_time: TimeVal,
+    pub last_enter_smode_time: TimeVal,
+    pub clear_child_tid: usize, /* CLONE_CHILD_CLEARTID */
+}
+</code></pre>
+<p>相较于初赛，我们为 TCB 加入了有关信号、时间、资源等结构。并根据 sys_clone 传递的参数，正确地实现 fork，比如以下代码段：</p>
+<pre><code class="language-rust">// kernel/src/task/task.rs(fn fork)
+
+// 拷贝用户地址空间
+let memory_set = if flags.contains(CloneFlags::VM) {
+    self.memory_set.clone()
+} else {
+    Arc::new(RwLock::new(MemorySet::from_copy_on_write(
+        &amp;mut self.memory_set.write(),
+    )))
+};
+if flags.contains(CloneFlags::THREAD) {
+    memory_set.write().map_thread_trap_context(private_tid);
+}
+</code></pre>
+<pre><code class="language-rust">// kernel/syscall/impls/process.rs (sys_do_fork)
+
+if flags.contains(CloneFlags::PARENT_SETTID) {
+    *translated_mut(current_user_token(), ptid as *mut u32) = new_pid as u32;
+}
+if flags.contains(CloneFlags::CHILD_SETTID) {
+    *translated_mut(child_token, ctid as *mut u32) = new_pid as u32;
+}
+if flags.contains(CloneFlags::CHILD_CLEARTID) {
+    new_task.inner_mut().clear_child_tid = ctid;
+}
+if flags.contains(CloneFlags::SETTLS) {
+    let trap_cx = new_task.inner_mut().trap_context();
+    trap_cx.set_tp(tls);
+}
+</code></pre>
+<h3 id="线程的引入">线程的引入</h3>
+<p>在 fork 过程中，当 CloneFlags 中存在 CLONE_THREAD 位时，正在创建的进程当前进程的为子线程</p>
+<p><strong>Pid 分配器的更改</strong></p>
+<p>由于我们的内核在实现线程时，为了更方便地为子线程分配 TrapContext Frame 资源，我们规定子线程的 tid (pid) 不应该与小于进程（主线程）的 tid (pid) ，故移除了进程 pid 的回收操作。</p>
+<p><strong>子进程与子线程的区分</strong></p>
+<p>目前我们将子线程与子进程均保存在 TCB 的 children 字段，在遇到进程退出等问题时会判断 child 是子进程还是子线程。</p>
+<p>目前通过 tgid 与 pid 来区分 TCB 是父进程的子进程还是子线程</p>
+<pre><code class="language-rust">// kernel/src/task/task.rs(fn fork)
+
+let pid_handle = pid_alloc();
+let tgid = if flags.contains(CloneFlags::THREAD) {
+    self.pid.0
+} else {
+    pid_handle.0
+};
+</code></pre>
+<p>如果 tgid 与 pid 值相同，则该 TCB 为进程，否则为线程</p>
+<p><strong>为线程分配资源</strong></p>
+<p>线程除了共享主线程（进程）的 memory_set, fd_table, sigaction 等资源，还需要一些独立的资源如ID, 内核地址空间的KernelStack，以及主线程中独立分配的 TrapContext Frame:</p>
+<pre><code class="language-rust">// kernel/syscall/impls/process.rs (sys_do_fork)
+
+if flags.contains(CloneFlags::THREAD) {
+    memory_set.write().map_thread_trap_context(private_tid);
+}
+
+// kernel/src/task/ttask.rs
+pub fn trap_context_position(tid: usize) -&gt; VirtAddr {
+    VirtAddr::from(TRAP_CONTEXT - tid * PAGE_SIZE)
+}
+</code></pre>
+<p>其中，private_tid 为tgid(主线程/父进程)与pid(子线程tid)的差值</p>
+<h3 id="进程线程的退出">进程/线程的退出</h3>
+<p>当前进程结束的方式包括：</p>
+<ol>
+<li>进程运行完代码段，非法访问到 .rodata 引发 trap，在 trap 处理中回收进程对象</li>
+<li>进程调用 exit 系统调用</li>
+<li>进程收到 kill 相关的信号，在信号处理时退出</li>
+</ol>
+<p>关于进程/线程的退出时需要做的工作包括：</p>
+<ol>
+<li>完成进程的初步回收：
+<ol>
+<li>将自身从 PID2TCB 映射管理器中移除</li>
+<li>标记自身状态为 Zombie，记录退出码</li>
+<li>将子进程移交给 initproc</li>
+<li>如果自身为某进程的子线程，还需要找到主进程并将自身从主进程中移除，并压入子线程回收管理器 CHILDREN_THREAD_MONITOR 中，在<em>下一次进程调度时回收可回收的资源</em></li>
+</ol>
+</li>
+<li>进程的父进程等待子进程退出，调用 wait 系统调用，完成子进程资源的回收：找到子进程中处于 Zombie 态的进程并且强引用计数为 1 的进程，移除该进程以彻底回收该进程的所有资源</li>
+</ol>
+<p><strong>子线程资源回收</strong></p>
+<p>子线程退出时，子线程会加入到回收管理器 CHILDREN_THREAD_MONITOR 中，并在<em>下一次进程调度时回收可回收的资源</em>。</p>
+<pre><code class="language-rust">// kernel/src/task/mod.rs (fn exit_current_and_run_next)
+
+if is_child_thread {
+    let parent = inner.parent.as_ref().unwrap().upgrade().unwrap();
+    let mut parent_inner = parent.inner_mut();
+    let children_iter = parent_inner.children.iter();
+    let (idx, _) = children_iter
+        .enumerate()
+        .find(|(_, t)| t.pid() == pid)
+        .unwrap();
+    parent_inner.children.remove(idx);
+    drop(parent_inner);
+    drop(parent);
+    drop(inner);
+    assert!(Arc::strong_count(&amp;task) == 1);
+    take_cancelled_chiled_thread(task);
+    schedule(&amp;mut TaskContext::empty() as *mut _);
+    unreachable!()
+}
+</code></pre>
+<p>这个过程本身其实可以不用做，而是等主线程进行 wait 系统调用时彻底回收。但由于测试过程中，进程会创建成千上万个子线程，如果这些线程资源没有及时回收，如 TrapContext, KenerlStack 等资源，会浪费许多内存资源。</p>
+<p>其实 <code>take_cancelled_chiled_thread(task)</code>这段代码本身，以及 <code>CHILDREN_THREAD_MONITOR</code>变量，也就是说这段代码本身其实可以直接改为 <code>drop(task)</code>，因为此时 task 强引用计数一定为 1，task 中可以释放的资源都可以在, <code>schedule</code> 之前释放掉但是 task 在执行 <code>exit_current_and_run_next</code>时本身出于内核态，此时回收 task 的 KerenlStack 既不符合逻辑，又有可能产生一些隐患，故选择使用 <code>CHILDREN_THREAD_MONITOR</code> 在调度时释放退出的线程。</p>
+
+    </div>
+</article>
+
+
+<div class="license markdown-body">
+    <blockquote>
+        <p>Unless otherwise noted, the content of this site is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+               target="_blank">CC BY-NC-SA 4.0</a>.</p>
+    </blockquote>
+</div>
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>Pages</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/archives/">归档</a>
+            </li>
+            
+            <li>
+                <a href="/about/">关于</a>
+            </li>
+            
+            <li>
+                <a href="/search/">站内搜索</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-links">
+        <h3>Links</h3>
+        <ul>
+            
+            <li>
+                <a href="https://github.com/BiteTheDisk" target="_blank"><span>GitHub</span></a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-tags">
+        <h3>Tags</h3>
+        <div>
+            
+            <span>
+                <a href="/tags/busybox/">busybox</a>
+            </span>
+            
+            <span>
+                <a href="/tags/debug/">Debug</a>
+            </span>
+            
+            <span>
+                <a href="/tags/makefile/">Makefile</a>
+            </span>
+            
+            <span>
+                <a href="/tags/oskernel/">OSKernel</a>
+            </span>
+            
+            <span>
+                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
+            </span>
+            
+            <span>
+                <a href="/tags/process/">process</a>
+            </span>
+            
+            <span>
+                <a href="/tags/thread/">thread</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I&#34;</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5/">全国赛第一阶段</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
+            </span>
+            
+        </div>
+    </div>
+    <div class="sidebar-item sidebar-toc">
+        <h3>Table of Contents</h3><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#tcb-与-fork-的更改">TCB 与 fork 的更改</a></li>
+        <li><a href="#线程的引入">线程的引入</a></li>
+        <li><a href="#进程线程的退出">进程/线程的退出</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+</aside>
+
+        </div>
+        <div class="btn">
+    <div class="btn-menu" id="btn-menu">
+        <i class="iconfont icon-grid-sharp"></i>
+    </div>
+    <div class="btn-toggle-mode">
+        <i class="iconfont icon-contrast-sharp"></i>
+    </div>
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+<aside class="sidebar-mobile" style="display: none;">
+  <div class="sidebar-wrapper">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>Pages</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/archives/">归档</a>
+            </li>
+            
+            <li>
+                <a href="/about/">关于</a>
+            </li>
+            
+            <li>
+                <a href="/search/">站内搜索</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-links">
+        <h3>Links</h3>
+        <ul>
+            
+            <li>
+                <a href="https://github.com/BiteTheDisk" target="_blank"><span>GitHub</span></a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-tags">
+        <h3>Tags</h3>
+        <div>
+            
+            <span>
+                <a href="/tags/busybox/">busybox</a>
+            </span>
+            
+            <span>
+                <a href="/tags/debug/">Debug</a>
+            </span>
+            
+            <span>
+                <a href="/tags/makefile/">Makefile</a>
+            </span>
+            
+            <span>
+                <a href="/tags/oskernel/">OSKernel</a>
+            </span>
+            
+            <span>
+                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
+            </span>
+            
+            <span>
+                <a href="/tags/process/">process</a>
+            </span>
+            
+            <span>
+                <a href="/tags/thread/">thread</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I&#34;</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5/">全国赛第一阶段</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
+            </span>
+            
+        </div>
+    </div>
+    
+    
+    
+    <div class="sidebar-item sidebar-toc">
+        <h3>Table of Contents</h3>
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#tcb-与-fork-的更改">TCB 与 fork 的更改</a></li>
+        <li><a href="#线程的引入">线程的引入</a></li>
+        <li><a href="#进程线程的退出">进程/线程的退出</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    
+    
+  </div>
+</aside>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            
+            <span>&copy; 2023-2023
+                <a href="https://bitethedisk.github.io/">BiteTheDisk</a>
+                 | <a href="https://github.com/BiteTheDisk/bitethedisk.github.io">Source code</a> 
+                | Powered by <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> &amp; <a href="https://gohugo.io/"
+                                                    target="_blank">Hugo</a> 
+            </span>
+        </div>
+    </div>
+</footer>
+
+    
+<script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha512-N9IJRoc3LaP3NDoiGkcPa4gG94kapGpaA5Zq9/Dr04uf5TbLFU5q0o8AbRhLKUUlp8QFS2u7S+Yti0U7QtuZvQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-core.min.js" integrity="sha512-LCKPTo0gtJ74zCNMbWw04ltmujpzSR4oW+fgN+Y1YclhM5ZrHCZQAJE4quEodcI/G122sRhSGU2BsSRUZ2Gu3w==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-GP4x8UWxWyh4BMbyJGOGneiTbkrWEF5izsVJByzVLodP8CuJH/n936+yQDMJJrOPUHLgyPbLiGw2rXmdvGdXHA==" crossorigin="anonymous"></script>
+
+
+
+<script defer src="/assets/js/fuji.min.645f1123be695831f419ab54c1bcba327325895c740014006e57070d4f3e5d6b553e929c4b46f40ea707249e9c7f7c2a446d32a39ce7319f80a34525586a8e0f.js" integrity="sha512-ZF8RI75pWDH0GatUwby6MnMliVx0ABQAblcHDU8&#43;XWtVPpKcS0b0DqcHJJ6cf3wqRG0yo5znMZ&#43;Ao0UlWGqODw=="></script>
+
+
+
+</body>
+
+</html>

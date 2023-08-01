@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Debug on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/debug/</link>
+    <description>Recent content in Debug on BiteTheDisk 小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 30 Jun 2023 18:37:11 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/debug/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[区域赛] 有关 BTD 的 Makefile</title>
+      <link>https://bitethedisk.github.io/post/about-makefile/</link>
+      <pubDate>Fri, 30 Jun 2023 18:37:11 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/about-makefile/</guid>
+      <description>&lt;p&gt;项目提供了一系列的 Makefile 来简化开发流程.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>开发中如调试内核</title>
+      <link>https://bitethedisk.github.io/post/how-to-debug-the-kernel/</link>
+      <pubDate>Fri, 30 Jun 2023 18:34:54 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/how-to-debug-the-kernel/</guid>
+      <description>&lt;p&gt;在 BTD 的开发中经常会遇到 debug 的需求，BTD 提供了一个方便的调试流程，只需启动两个 shell 即可
+开始调试&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

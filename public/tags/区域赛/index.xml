@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>区域赛 on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/</link>
+    <description>Recent content in 区域赛 on BiteTheDisk 小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 30 Jun 2023 18:37:11 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[区域赛] 有关 BTD 的 Makefile</title>
+      <link>https://bitethedisk.github.io/post/about-makefile/</link>
+      <pubDate>Fri, 30 Jun 2023 18:37:11 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/about-makefile/</guid>
+      <description>&lt;p&gt;项目提供了一系列的 Makefile 来简化开发流程.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

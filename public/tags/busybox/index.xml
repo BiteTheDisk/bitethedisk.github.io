@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>busybox on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/busybox/</link>
+    <description>Recent content in busybox on BiteTheDisk 小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 01 Aug 2023 18:37:11 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/busybox/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[全国赛I] busybox 预加载</title>
+      <link>https://bitethedisk.github.io/post/busybox-pre-init/</link>
+      <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/busybox-pre-init/</guid>
+      <description>busybox 预加载 由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行</description>
+    </item>
+    
+  </channel>
+</rss>
