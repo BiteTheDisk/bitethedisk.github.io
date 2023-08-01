@@ -1,8 +1,8 @@
 ---
-title: "[全国赛]项目结构(rust-workspace不能使用)"
+title: "[全国赛I]项目结构(rust-workspace不能使用)"
 date: 2023-06-30T19:29:29+08:00
-tags: ["全国赛第一阶段", "RustWorkspace"]
-draft: true
+tags: ["全国赛I", "RustWorkspace"]
+draft: false
 ---
 
 
