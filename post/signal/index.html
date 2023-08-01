@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#ffffff" />
 
 
-<title>Posts - BiteTheDisk 小站</title>
+<title>信号处理 - BiteTheDisk 小站</title>
 
 
 <meta name="author" content="BiteTheDisk" />
@@ -31,14 +31,16 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
-<link rel="alternate" type="application/rss+xml" href="https://bitethedisk.github.io/post/index.xml" title="BiteTheDisk 小站" />
+<meta name="keywords" content="全国赛第一阶段" />
 
-<meta property="og:title" content="Posts" />
-<meta name="twitter:title" content="Posts" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://bitethedisk.github.io/post/" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+
+<meta property="og:title" content="信号处理" />
+<meta name="twitter:title" content="信号处理" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/signal/" /><meta property="og:description" content="" />
+<meta name="twitter:description" content="" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-01T21:17:37+08:00" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-01T21:17:37+08:00" /><meta property="article:modified_time" content="2023-08-01T21:17:37+08:00" />
 
 
 <style>
@@ -101,10 +103,8 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-
-
-
-<div class="post">
+<article>
+    
     <h2 class="post-item post-title">
         <a href="https://bitethedisk.github.io/post/signal/">信号处理</a>
     </h2>
@@ -116,113 +116,36 @@
 <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
 
     </div>
-    <div class="post-item post-summary markdown-body">
-        
+    
+    <div class="post-content markdown-body">
+        <p>在目前的实现中信号总共有63种，1-31为非实时信号，34-63是实时信号。32和33为未定义信号。
+信号是每个进程独有的，除此之外每个进程还有信号掩码。
+涉及信号处理的共有3个系统调用：SYS_SIGACTION，SYS_SIGPROCMASK，SYS_SIGRETURN。</p>
+<h2 id="涉及的系统调用">涉及的系统调用</h2>
+<p>sys_sigaction用于为一个信号注册信号处理函数，当进程接受到信号后会跳转到这个信号处理函数。一般信号处理函数后会调用sigreturn将程序上下文恢复到执行信号处理函数之前的状态。但程序也可能不调用sigreturn，而是使用longjump跳转到别的位置，内核不关心信号处理函数是否返回，不在内核中维护信号处理上下文信息，而是在执行信号处理函数之前将上下文压入用户栈，并在sigreturn时从用户栈中恢复信息。在执行信号处理函数的过程中，这些保存的上下文信息可能被用户程序修改，用户程序可以借此返回到不同的地方。</p>
+<p>sys_sigprocmask用于修改进程的信号掩码。信号掩码可以用来屏蔽信号，被屏蔽的信号会被阻塞，直到信号掩码不再阻塞该信号时该信号才会被处理。
+9号信号和19号信号不能被阻塞。
+sys_sigreturn会从用户栈中取出上下文信息将程序恢复到信号处理前的状态。
+sys_sigreturn没有返回值，在执行完后不应将执行结果写入a0寄存器。</p>
+<p>由于执行信号处理函数时与执行其他用户函数没有区别，linux的信号设计自然支持信号处理的嵌套，只要正确实现了这几个系统调用，无需在内核内保存额外信息就可以支持信号的嵌套调用。
+一般信号的产生是通过sys_kill等系统调用产生的，除此之外进程退出时也会产生信号。
+信号处理的时机是不确定的。现在内核中会在每次返回用户态之前检查有无需要处理的信号。</p>
+<h2 id="与其他系统调用的交互">与其他系统调用的交互</h2>
+<p>sys_wait4 、sys_read、sys_futex等具有阻塞等待行为的系统调用可以被信号中断，如果在阻塞过程中有到来的信号应该停止等待，返回被中断的错误码。
+fork 出来的子进程应该继承父进程的注册的信号处理程序，和信号掩码。
+exec 后程序应该清空信号处理程序但是保留信号掩码。</p>
     </div>
+</article>
+
+
+<div class="license markdown-body">
+    <blockquote>
+        <p>Unless otherwise noted, the content of this site is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+               target="_blank">CC BY-NC-SA 4.0</a>.</p>
+    </blockquote>
 </div>
 
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/busybox-pre-init/">[全国赛I] busybox 预加载</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;295 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/busybox">busybox</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I&#34;</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        busybox 预加载 由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/scheduling/">[全国赛I] 进程/线程调度</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;540 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/process">process</a>&nbsp;<a href="/tags/thread">thread</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I&#34;</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        进程调度 在我们的内核中，我们使用 TASKMANAGER 管理分别处于就绪态，阻塞态的进程，包括因为调用 nanosleep 而休眠的进程。 // kernel/src/task/manager.rs // 负责管理待调度的进程对象 pub struct TaskManager { ready_queue: VecDeque&lt;Arc&lt;TaskControlBlock&gt;&gt;, waiting_queue: VecDeque&lt;Arc&lt;TaskControlBlock&gt;&gt;, hq: BinaryHeap&lt;HangingTask&gt;, } // 用于管理 sleep 进程 pub struct HangingTask { wake_up_time: usize, // ns inner: Arc&lt;TaskControlBlock&gt;, } // 用于处理子线
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/process-thread/">[全国赛I] 进程管理-进程与线程</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1360 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/process">process</a>&nbsp;<a href="/tags/thread">thread</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I&#34;</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        进程管理-进程与线程 TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/about-makefile/">[区域赛] 有关 BTD 的 Makefile</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;173 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/makefile">Makefile</a>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;<a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B">区域赛</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        <p>项目提供了一系列的 Makefile 来简化开发流程.</p>
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/how-to-debug-the-kernel/">开发中如调试内核</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;396 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/oskernel">OSKernel</a>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        <p>在 BTD 的开发中经常会遇到 debug 的需求，BTD 提供了一个方便的调试流程，只需启动两个 shell 即可
-开始调试</p>
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/random-stuck/">[已解决]内核在执行用户程序时随机卡死</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-29</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1107 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/problems--solutions">Problems-&amp;-Solutions</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        <p>内核在运行的时候总是会不知何时卡死，底层原因是持续触发时钟中断</p>
-    </div>
-</div>
 
             </div>
             <aside class="col-12 col-md-3 float-left sidebar">
@@ -307,9 +230,13 @@
             
         </div>
     </div>
-    
-    
-    
+    <div class="sidebar-item sidebar-toc">
+        <h3>Table of Contents</h3><nav id="TableOfContents">
+  <ul>
+    <li><a href="#涉及的系统调用">涉及的系统调用</a></li>
+    <li><a href="#与其他系统调用的交互">与其他系统调用的交互</a></li>
+  </ul>
+</nav></div>
 </aside>
 
         </div>
@@ -412,7 +339,12 @@
     
     <div class="sidebar-item sidebar-toc">
         <h3>Table of Contents</h3>
-        
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#涉及的系统调用">涉及的系统调用</a></li>
+    <li><a href="#与其他系统调用的交互">与其他系统调用的交互</a></li>
+  </ul>
+</nav>
     </div>
     
     
