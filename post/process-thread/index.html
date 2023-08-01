@@ -37,8 +37,10 @@
 <meta property="og:title" content="[全国赛I] 进程管理-进程与线程" />
 <meta name="twitter:title" content="[全国赛I] 进程管理-进程与线程" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bitethedisk.github.io/post/process-thread/" /><meta property="og:description" content="TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct TaskControlBlock { ... pub sigactions: Arc&lt;RwLock&lt;[SigAction; MAX_SIGNUM as usize]&gt;&gt;, pub" />
-<meta name="twitter:description" content="TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct TaskControlBlock { ... pub sigactions: Arc&lt;RwLock&lt;[SigAction; MAX_SIGNUM as usize]&gt;&gt;, pub" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/process-thread/" /><meta property="og:description" content="TCB 与 fork 的更改
+相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。" />
+<meta name="twitter:description" content="TCB 与 fork 的更改
+相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-01T18:37:11+08:00" /><meta property="article:modified_time" content="2023-08-01T18:37:11+08:00" />
 
@@ -249,7 +251,6 @@ if is_child_thread {
 </code></pre>
 <p>这个过程本身其实可以不用做，而是等主线程进行 wait 系统调用时彻底回收。但由于测试过程中，进程会创建成千上万个子线程，如果这些线程资源没有及时回收，如 TrapContext, KenerlStack 等资源，会浪费许多内存资源。</p>
 <p>其实 <code>take_cancelled_chiled_thread(task)</code>这段代码本身，以及 <code>CHILDREN_THREAD_MONITOR</code>变量，也就是说这段代码本身其实可以直接改为 <code>drop(task)</code>，因为此时 task 强引用计数一定为 1，task 中可以释放的资源都可以在, <code>schedule</code> 之前释放掉但是 task 在执行 <code>exit_current_and_run_next</code>时本身出于内核态，此时回收 task 的 KerenlStack 既不符合逻辑，又有可能产生一些隐患，故选择使用 <code>CHILDREN_THREAD_MONITOR</code> 在调度时释放退出的线程。</p>
-
     </div>
 </article>
 

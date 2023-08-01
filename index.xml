@@ -40,7 +40,8 @@
       <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/post/process-thread/</guid>
-      <description>TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct TaskControlBlock { ... pub sigactions: Arc&amp;lt;RwLock&amp;lt;[SigAction; MAX_SIGNUM as usize]&amp;gt;&amp;gt;, pub</description>
+      <description>&lt;h3 id=&#34;tcb-与-fork-的更改&#34;&gt;TCB 与 fork 的更改&lt;/h3&gt;
+&lt;p&gt;相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。&lt;/p&gt;</description>
     </item>
     
     <item>
