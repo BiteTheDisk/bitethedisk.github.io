@@ -3,15 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://bitethedisk.github.io/</loc>
-    <lastmod>2023-08-01T21:17:37+08:00</lastmod>
+    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/tags/ffi/</loc>
+    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/</loc>
-    <lastmod>2023-08-01T21:17:37+08:00</lastmod>
+    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
   </url><url>
-    <loc>https://bitethedisk.github.io/post/signal/</loc>
-    <lastmod>2023-08-01T21:17:37+08:00</lastmod>
+    <loc>https://bitethedisk.github.io/post/rust-and-c/</loc>
+    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5/</loc>
+    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/post/signal/</loc>
     <lastmod>2023-08-01T21:17:37+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/busybox-pre-init/</loc>
@@ -35,10 +41,16 @@
     <loc>https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/</loc>
     <lastmod>2023-08-01T18:37:11+08:00</lastmod>
   </url><url>
+    <loc>https://bitethedisk.github.io/post/opensbi-getchar/</loc>
+    <lastmod>2023-07-12T17:17:35+08:00</lastmod>
+  </url><url>
     <loc>https://bitethedisk.github.io/post/rust-heap-and-c/</loc>
     <lastmod>2023-07-07T22:35:05+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/project-structure/</loc>
+    <lastmod>2023-06-30T19:29:29+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/tags/rustworkspace/</loc>
     <lastmod>2023-06-30T19:29:29+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/about-makefile/</loc>

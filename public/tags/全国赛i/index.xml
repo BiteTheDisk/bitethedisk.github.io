@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>全国赛I&#34; on BiteTheDisk 小站</title>
+    <title>全国赛I on BiteTheDisk 小站</title>
     <link>https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/</link>
-    <description>Recent content in 全国赛I&#34; on BiteTheDisk 小站</description>
+    <description>Recent content in 全国赛I on BiteTheDisk 小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Tue, 01 Aug 2023 18:37:11 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/index.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,7 @@
       <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/post/busybox-pre-init/</guid>
-      <description>busybox 预加载 由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行</description>
+      <description>&lt;p&gt;由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -22,7 +22,7 @@
       <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/post/scheduling/</guid>
-      <description>进程调度 在我们的内核中，我们使用 TASKMANAGER 管理分别处于就绪态，阻塞态的进程，包括因为调用 nanosleep 而休眠的进程。 // kernel/src/task/manager.rs // 负责管理待调度的进程对象 pub struct TaskManager { ready_queue: VecDeque&amp;lt;Arc&amp;lt;TaskControlBlock&amp;gt;&amp;gt;, waiting_queue: VecDeque&amp;lt;Arc&amp;lt;TaskControlBlock&amp;gt;&amp;gt;, hq: BinaryHeap&amp;lt;HangingTask&amp;gt;, } // 用于管理 sleep 进程 pub struct HangingTask { wake_up_time: usize, // ns inner: Arc&amp;lt;TaskControlBlock&amp;gt;, } // 用于处理子线</description>
+      <description>&lt;p&gt;在我们的内核中，我们使用 TASKMANAGER 管理分别处于就绪态，阻塞态的进程，包括因为调用 nanosleep 而休眠的进程。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -31,7 +31,29 @@
       <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/post/process-thread/</guid>
-      <description>进程管理-进程与线程 TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct</description>
+      <description>TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct TaskControlBlock { ... pub sigactions: Arc&amp;lt;RwLock&amp;lt;[SigAction; MAX_SIGNUM as usize]&amp;gt;&amp;gt;, pub</description>
+    </item>
+    
+    <item>
+      <title>适配 OpenSBI</title>
+      <link>https://bitethedisk.github.io/post/opensbi-getchar/</link>
+      <pubDate>Wed, 12 Jul 2023 17:17:35 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/opensbi-getchar/</guid>
+      <description>一开始</description>
+    </item>
+    
+    <item>
+      <title>[全国赛I]项目结构(rust-workspace不能使用)</title>
+      <link>https://bitethedisk.github.io/post/project-structure/</link>
+      <pubDate>Fri, 30 Jun 2023 19:29:29 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/project-structure/</guid>
+      <description>&lt;p&gt;随着开发的进行，我们需要的适配和封装的数据结构越来越多，其中大部分与我们的内核本体关系并没有那么紧密，
+所以我们将这部分结构，如用于的引导程序、FAT32、Linux 相关数据结构放在了项目根目录中的 &lt;code&gt;crates&lt;/code&gt; 里&lt;/p&gt;
+&lt;p&gt;Rust 本身是支持多个 &lt;code&gt;crates&lt;/code&gt; 构成的一个 &lt;code&gt;workspace&lt;/code&gt;，这些 &lt;code&gt;crates&lt;/code&gt; 直接可以相互引用，但是由于我们使用
+了 &lt;code&gt;.cargo/config.toml&lt;/code&gt; 来配置 rustc，所以 &lt;code&gt;workspace&lt;/code&gt; 并不能为我们所有 (因为目前 &lt;code&gt;workspace&lt;/code&gt;
+不支持在 &lt;code&gt;workspace&lt;/code&gt; 中读取 &lt;code&gt;.cargo/config.toml&lt;/code&gt;)&lt;/p&gt;</description>
     </item>
     
   </channel>

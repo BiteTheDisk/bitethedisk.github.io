@@ -6,7 +6,16 @@
     <description>Recent content in 全国赛第一阶段 on BiteTheDisk 小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Aug 2023 21:17:37 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Aug 2023 21:31:27 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rust 和 C 的交互</title>
+      <link>https://bitethedisk.github.io/post/rust-and-c/</link>
+      <pubDate>Tue, 01 Aug 2023 21:31:27 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/rust-and-c/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>信号处理</title>
       <link>https://bitethedisk.github.io/post/signal/</link>

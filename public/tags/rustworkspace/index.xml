@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RustWorkspace on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/rustworkspace/</link>
+    <description>Recent content in RustWorkspace on BiteTheDisk 小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 30 Jun 2023 19:29:29 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/rustworkspace/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[全国赛I]项目结构(rust-workspace不能使用)</title>
+      <link>https://bitethedisk.github.io/post/project-structure/</link>
+      <pubDate>Fri, 30 Jun 2023 19:29:29 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/project-structure/</guid>
+      <description>&lt;p&gt;随着开发的进行，我们需要的适配和封装的数据结构越来越多，其中大部分与我们的内核本体关系并没有那么紧密，
+所以我们将这部分结构，如用于的引导程序、FAT32、Linux 相关数据结构放在了项目根目录中的 &lt;code&gt;crates&lt;/code&gt; 里&lt;/p&gt;
+&lt;p&gt;Rust 本身是支持多个 &lt;code&gt;crates&lt;/code&gt; 构成的一个 &lt;code&gt;workspace&lt;/code&gt;，这些 &lt;code&gt;crates&lt;/code&gt; 直接可以相互引用，但是由于我们使用
+了 &lt;code&gt;.cargo/config.toml&lt;/code&gt; 来配置 rustc，所以 &lt;code&gt;workspace&lt;/code&gt; 并不能为我们所有 (因为目前 &lt;code&gt;workspace&lt;/code&gt;
+不支持在 &lt;code&gt;workspace&lt;/code&gt; 中读取 &lt;code&gt;.cargo/config.toml&lt;/code&gt;)&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

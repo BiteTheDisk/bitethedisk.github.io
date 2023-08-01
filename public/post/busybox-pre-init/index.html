@@ -31,14 +31,14 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
-<meta name="keywords" content="busybox, 全国赛I&#34;" />
+<meta name="keywords" content="busybox, 全国赛I" />
 
 
 <meta property="og:title" content="[全国赛I] busybox 预加载" />
 <meta name="twitter:title" content="[全国赛I] busybox 预加载" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bitethedisk.github.io/post/busybox-pre-init/" /><meta property="og:description" content="busybox 预加载 由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行" />
-<meta name="twitter:description" content="busybox 预加载 由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/busybox-pre-init/" /><meta property="og:description" content="由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。" />
+<meta name="twitter:description" content="由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-01T18:37:11+08:00" /><meta property="article:modified_time" content="2023-08-01T18:37:11+08:00" />
 
@@ -111,15 +111,14 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;295 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;291 words</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/busybox">busybox</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I&#34;</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/busybox">busybox</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
 
     </div>
     
     <div class="post-content markdown-body">
-        <h1 id="busybox-预加载">busybox 预加载</h1>
-<p>由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。</p>
+        <p>由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。</p>
 <pre><code class="language-rust">// kernel/src/task/initproc/mod.rs
 pub static ref BUSYBOX: RwLock&lt;Busybox&gt; = RwLock::new({
     extern &quot;C&quot; {
@@ -163,7 +162,6 @@ impl Busybox {
     }
 }
 </code></pre>
-
     </div>
 </article>
 
@@ -227,6 +225,10 @@ impl Busybox {
             </span>
             
             <span>
+                <a href="/tags/ffi/">FFI</a>
+            </span>
+            
+            <span>
                 <a href="/tags/makefile/">Makefile</a>
             </span>
             
@@ -243,11 +245,15 @@ impl Busybox {
             </span>
             
             <span>
+                <a href="/tags/rustworkspace/">RustWorkspace</a>
+            </span>
+            
+            <span>
                 <a href="/tags/thread/">thread</a>
             </span>
             
             <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I&#34;</a>
+                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
             </span>
             
             <span>
@@ -326,6 +332,10 @@ impl Busybox {
             </span>
             
             <span>
+                <a href="/tags/ffi/">FFI</a>
+            </span>
+            
+            <span>
                 <a href="/tags/makefile/">Makefile</a>
             </span>
             
@@ -342,11 +352,15 @@ impl Busybox {
             </span>
             
             <span>
+                <a href="/tags/rustworkspace/">RustWorkspace</a>
+            </span>
+            
+            <span>
                 <a href="/tags/thread/">thread</a>
             </span>
             
             <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I&#34;</a>
+                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
             </span>
             
             <span>
