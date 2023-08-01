@@ -1,13 +1,13 @@
 ---
 title: "[全国赛I] 进程/线程调度"
 date: 2023-08-01T18:37:11+08:00
-tags: ["process", "thread", 全国赛I"]
+tags: ["process", "thread", "全国赛I"]
 draft: false
 ---
 
-# 进程调度
-
 在我们的内核中，我们使用 TASKMANAGER 管理分别处于就绪态，阻塞态的进程，包括因为调用 nanosleep 而休眠的进程。
+
+<!--more-->
 
 ```rust
 // kernel/src/task/manager.rs

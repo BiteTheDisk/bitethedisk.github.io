@@ -1,11 +1,9 @@
 ---
 title: "[全国赛I] 进程管理-进程与线程"
 date: 2023-08-01T18:37:11+08:00
-tags: ["process", "thread", 全国赛I"]
+tags: ["process", "thread", "全国赛I"]
 draft: false
 ---
-
-# 进程管理-进程与线程
 
 ### TCB 与 fork 的更改
 

@@ -1,13 +1,13 @@
 ---
 title: "[全国赛I] busybox 预加载"
 date: 2023-08-01T18:37:11+08:00
-tags: ["busybox", 全国赛I"]
+tags: ["busybox", "全国赛I"]
 draft: false
 ---
 
-#  busybox 预加载
-
 由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。
+
+<!--more-->
 
 ```rust
 // kernel/src/task/initproc/mod.rs
