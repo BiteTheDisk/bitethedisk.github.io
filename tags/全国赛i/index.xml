@@ -34,5 +34,18 @@
       <description>进程管理-进程与线程 TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct</description>
     </item>
     
+    <item>
+      <title>[全国赛I]项目结构(rust-workspace不能使用)</title>
+      <link>https://bitethedisk.github.io/post/project-structure/</link>
+      <pubDate>Fri, 30 Jun 2023 19:29:29 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/project-structure/</guid>
+      <description>&lt;p&gt;随着开发的进行，我们需要的适配和封装的数据结构越来越多，其中大部分与我们的内核本体关系并没有那么紧密，
+所以我们将这部分结构，如用于的引导程序、FAT32、Linux 相关数据结构放在了项目根目录中的 &lt;code&gt;crates&lt;/code&gt; 里&lt;/p&gt;
+&lt;p&gt;Rust 本身是支持多个 &lt;code&gt;crates&lt;/code&gt; 构成的一个 &lt;code&gt;workspace&lt;/code&gt;，这些 &lt;code&gt;crates&lt;/code&gt; 直接可以相互引用，但是由于我们使用
+了 &lt;code&gt;.cargo/config.toml&lt;/code&gt; 来配置 rustc，所以 &lt;code&gt;workspace&lt;/code&gt; 并不能为我们所有 (因为目前 &lt;code&gt;workspace&lt;/code&gt;
+不支持在 &lt;code&gt;workspace&lt;/code&gt; 中读取 &lt;code&gt;.cargo/config.toml&lt;/code&gt;)&lt;/p&gt;</description>
+    </item>
+    
   </channel>
 </rss>
