@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#ffffff" />
 
 
-<title>Archives - BiteTheDisk 小站</title>
+<title>动态连接 - BiteTheDisk 小站</title>
 
 
 <meta name="author" content="BiteTheDisk" />
@@ -31,14 +31,16 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
-<link rel="alternate" type="application/rss+xml" href="https://bitethedisk.github.io/archives/index.xml" title="BiteTheDisk 小站" />
+<meta name="keywords" content="全国赛第一阶段" />
 
-<meta property="og:title" content="Archives" />
-<meta name="twitter:title" content="Archives" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://bitethedisk.github.io/archives/" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+
+<meta property="og:title" content="动态连接" />
+<meta name="twitter:title" content="动态连接" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/dynamic/" /><meta property="og:description" content="" />
+<meta name="twitter:description" content="" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-01T23:11:47+08:00" /><meta property="article:modified_time" content="2023-08-01T23:11:47+08:00" />
 
 
 <style>
@@ -101,137 +103,35 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-
-<div class="page-info">
-  <span>Total posts: 9</span>
-</div>
-
-
-
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/dynamic/">动态连接</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/dynamic/">动态连接</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
 <span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;285 words</span>
 
 <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
 
-  </div>
-</div>
+    </div>
+    
+    <div class="post-content markdown-body">
+        <p>实现动态连接十分简单，只需要在加载elf文件时判断是否存在interpret段，如果存在就加载对应的动态连接器，将动态连接器内容映射进内存并将程序入口设置为动态连接器的入口。接下来动态连接器会完成剩下的连接工作。</p>
+<p>尽管原理很简单，但由于动态连接涉及的系统调用较多，在加入动态连接后很容易出bug。
+未正确处理mmap，没压入或压入了错误的aux数组，fstat返回空结构体都可能导致动态连接失败。
+值得一提的是，这里使用的动态连接器是musl libc，它既是动态连接器又是函数库，测例中使用的函数以及动态连接的过程都可以从这个库的代码中找到。
+阅读这部分代码会对调试程序有帮助。</p>
+    </div>
+</article>
 
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/signal/">信号处理</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;884 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
-
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/busybox-pre-init/">[全国赛I] busybox 预加载</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;291 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/busybox">busybox</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
-
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/scheduling/">[全国赛I] 进程/线程调度</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;536 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/process">process</a>&nbsp;<a href="/tags/thread">thread</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
-
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/process-thread/">[全国赛I] 进程管理-进程与线程</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1350 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/process">process</a>&nbsp;<a href="/tags/thread">thread</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
-
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/project-structure/">[全国赛I]项目结构(rust-workspace不能使用)</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;748 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;<a href="/tags/rustworkspace">RustWorkspace</a>&nbsp;</span>
-
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/about-makefile/">[区域赛] 有关 BTD 的 Makefile</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;173 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/makefile">Makefile</a>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;<a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B">区域赛</a>&nbsp;</span>
-
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/how-to-debug-the-kernel/">开发中如调试内核</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;396 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/oskernel">OSKernel</a>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;</span>
-
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="post-item post-title-archive">
-    <a href="https://bitethedisk.github.io/post/random-stuck/">[已解决]内核在执行用户程序时随机卡死</a>
-  </h3>
-  <div class="post-item post-meta-archive">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-29</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1107 words</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/problems--solutions">Problems-&amp;-Solutions</a>&nbsp;</span>
-
-  </div>
+<div class="license markdown-body">
+    <blockquote>
+        <p>Unless otherwise noted, the content of this site is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+               target="_blank">CC BY-NC-SA 4.0</a>.</p>
+    </blockquote>
 </div>
 
 
@@ -323,9 +223,8 @@
             
         </div>
     </div>
-    
-    
-    
+    <div class="sidebar-item sidebar-toc">
+        <h3>Table of Contents</h3><nav id="TableOfContents"></nav></div>
 </aside>
 
         </div>
@@ -429,6 +328,13 @@
     </div>
     
     
+    
+    <div class="sidebar-item sidebar-toc">
+        <h3>Table of Contents</h3>
+        <nav id="TableOfContents"></nav>
+    </div>
+    
+    
   </div>
 </aside>
     </main>
@@ -449,6 +355,10 @@
 </footer>
 
     
+<script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha512-N9IJRoc3LaP3NDoiGkcPa4gG94kapGpaA5Zq9/Dr04uf5TbLFU5q0o8AbRhLKUUlp8QFS2u7S+Yti0U7QtuZvQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-core.min.js" integrity="sha512-LCKPTo0gtJ74zCNMbWw04ltmujpzSR4oW+fgN+Y1YclhM5ZrHCZQAJE4quEodcI/G122sRhSGU2BsSRUZ2Gu3w==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-GP4x8UWxWyh4BMbyJGOGneiTbkrWEF5izsVJByzVLodP8CuJH/n936+yQDMJJrOPUHLgyPbLiGw2rXmdvGdXHA==" crossorigin="anonymous"></script>
 
 
 
