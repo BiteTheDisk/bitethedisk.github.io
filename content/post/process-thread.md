@@ -9,6 +9,8 @@ draft: false
 
 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。
 
+<!--more-->
+
 ```rust
 // kernel/task/task.rs
 
