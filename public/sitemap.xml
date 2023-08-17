@@ -3,6 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://bitethedisk.github.io/</loc>
+<<<<<<< HEAD
     <lastmod>2023-08-01T21:31:27+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/tags/ffi/</loc>
@@ -10,6 +11,18 @@
   </url><url>
     <loc>https://bitethedisk.github.io/post/</loc>
     <lastmod>2023-08-01T21:31:27+08:00</lastmod>
+=======
+    <lastmod>2023-08-17T17:28:13+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/post/</loc>
+    <lastmod>2023-08-17T17:28:13+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/tags/%E4%BC%98%E5%8C%96/</loc>
+    <lastmod>2023-08-17T17:28:13+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/post/fs-optimization/</loc>
+    <lastmod>2023-08-17T17:28:13+08:00</lastmod>
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
   </url><url>
     <loc>https://bitethedisk.github.io/post/rust-and-c/</loc>
     <lastmod>2023-08-01T21:31:27+08:00</lastmod>
@@ -29,12 +42,13 @@
     <loc>https://bitethedisk.github.io/post/process-thread/</loc>
     <lastmod>2023-08-01T18:37:11+08:00</lastmod>
   </url><url>
-    <loc>https://bitethedisk.github.io/tags/busybox/</loc>
+    <loc>https://bitethedisk.github.io/tags/%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2023-08-01T18:37:11+08:00</lastmod>
   </url><url>
-    <loc>https://bitethedisk.github.io/tags/process/</loc>
+    <loc>https://bitethedisk.github.io/tags/%E8%BF%9B%E7%A8%8B/</loc>
     <lastmod>2023-08-01T18:37:11+08:00</lastmod>
   </url><url>
+<<<<<<< HEAD
     <loc>https://bitethedisk.github.io/tags/thread/</loc>
     <lastmod>2023-08-01T18:37:11+08:00</lastmod>
   </url><url>
@@ -47,6 +61,8 @@
     <loc>https://bitethedisk.github.io/post/rust-heap-and-c/</loc>
     <lastmod>2023-07-07T22:35:05+08:00</lastmod>
   </url><url>
+=======
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
     <loc>https://bitethedisk.github.io/post/project-structure/</loc>
     <lastmod>2023-06-30T19:29:29+08:00</lastmod>
   </url><url>
@@ -65,16 +81,13 @@
     <loc>https://bitethedisk.github.io/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/</loc>
     <lastmod>2023-06-30T18:37:11+08:00</lastmod>
   </url><url>
-    <loc>https://bitethedisk.github.io/tags/oskernel/</loc>
-    <lastmod>2023-06-30T18:34:54+08:00</lastmod>
-  </url><url>
     <loc>https://bitethedisk.github.io/post/how-to-debug-the-kernel/</loc>
     <lastmod>2023-06-30T18:34:54+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/random-stuck/</loc>
     <lastmod>2023-06-29T21:42:09+08:00</lastmod>
   </url><url>
-    <loc>https://bitethedisk.github.io/tags/problems--solutions/</loc>
+    <loc>https://bitethedisk.github.io/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/</loc>
     <lastmod>2023-06-29T21:42:09+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/about/</loc>

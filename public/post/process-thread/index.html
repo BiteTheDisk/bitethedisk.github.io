@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.111.3">
+<meta name="generator" content="Hugo 0.110.0">
 
 
 
@@ -31,16 +31,25 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
+<<<<<<< HEAD
 <meta name="keywords" content="process, thread, 全国赛I" />
+=======
+<meta name="keywords" content="进程, 线程, 全国赛第一阶段" />
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
 
 
 <meta property="og:title" content="[全国赛I] 进程管理-进程与线程" />
 <meta name="twitter:title" content="[全国赛I] 进程管理-进程与线程" />
 <meta property="og:type" content="article" />
+<<<<<<< HEAD
 <meta property="og:url" content="https://bitethedisk.github.io/post/process-thread/" /><meta property="og:description" content="TCB 与 fork 的更改
 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。" />
 <meta name="twitter:description" content="TCB 与 fork 的更改
 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+=======
+<meta property="og:url" content="https://bitethedisk.github.io/post/process-thread/" /><meta property="og:description" content="TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct TaskControlBlock { ... pub sigactions: Arc&lt;RwLock&lt;[SigAction; MAX_SIGNUM as usize]&gt;&gt;, pub" />
+<meta name="twitter:description" content="TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct TaskControlBlock { ... pub sigactions: Arc&lt;RwLock&lt;[SigAction; MAX_SIGNUM as usize]&gt;&gt;, pub" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-01T18:37:11+08:00" /><meta property="article:modified_time" content="2023-08-01T18:37:11+08:00" />
 
@@ -115,13 +124,23 @@
 
 <span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1350 words</span>
 
+<<<<<<< HEAD
 <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/process">process</a>&nbsp;<a href="/tags/thread">thread</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
+=======
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E8%BF%9B%E7%A8%8B">进程</a>&nbsp;<a href="/tags/%E7%BA%BF%E7%A8%8B">线程</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
 
     </div>
     
     <div class="post-content markdown-body">
+<<<<<<< HEAD
         <h3 id="tcb-与-fork-的更改">TCB 与 fork 的更改</h3>
 <p>相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。</p>
+=======
+        <h2 id="tcb-与-fork-的更改">TCB 与 fork 的更改</h2>
+<p>相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux
+manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。</p>
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
 <pre><code class="language-rust">// kernel/task/task.rs
 
 pub struct TaskControlBlock {
@@ -177,7 +196,7 @@ if flags.contains(CloneFlags::SETTLS) {
     trap_cx.set_tp(tls);
 }
 </code></pre>
-<h3 id="线程的引入">线程的引入</h3>
+<h2 id="线程的引入">线程的引入</h2>
 <p>在 fork 过程中，当 CloneFlags 中存在 CLONE_THREAD 位时，正在创建的进程当前进程的为子线程</p>
 <p><strong>Pid 分配器的更改</strong></p>
 <p>由于我们的内核在实现线程时，为了更方便地为子线程分配 TrapContext Frame 资源，我们规定子线程的 tid (pid) 不应该与小于进程（主线程）的 tid (pid) ，故移除了进程 pid 的回收操作。</p>
@@ -208,7 +227,7 @@ pub fn trap_context_position(tid: usize) -&gt; VirtAddr {
 }
 </code></pre>
 <p>其中，private_tid 为tgid(主线程/父进程)与pid(子线程tid)的差值</p>
-<h3 id="进程线程的退出">进程/线程的退出</h3>
+<h2 id="进程线程的退出">进程/线程的退出</h2>
 <p>当前进程结束的方式包括：</p>
 <ol>
 <li>进程运行完代码段，非法访问到 .rodata 引发 trap，在 trap 处理中回收进程对象</li>
@@ -249,8 +268,20 @@ if is_child_thread {
     unreachable!()
 }
 </code></pre>
+<<<<<<< HEAD
 <p>这个过程本身其实可以不用做，而是等主线程进行 wait 系统调用时彻底回收。但由于测试过程中，进程会创建成千上万个子线程，如果这些线程资源没有及时回收，如 TrapContext, KenerlStack 等资源，会浪费许多内存资源。</p>
 <p>其实 <code>take_cancelled_chiled_thread(task)</code>这段代码本身，以及 <code>CHILDREN_THREAD_MONITOR</code>变量，也就是说这段代码本身其实可以直接改为 <code>drop(task)</code>，因为此时 task 强引用计数一定为 1，task 中可以释放的资源都可以在, <code>schedule</code> 之前释放掉但是 task 在执行 <code>exit_current_and_run_next</code>时本身出于内核态，此时回收 task 的 KerenlStack 既不符合逻辑，又有可能产生一些隐患，故选择使用 <code>CHILDREN_THREAD_MONITOR</code> 在调度时释放退出的线程。</p>
+=======
+<p>这个过程本身其实可以不用做，而是等主线程进行 wait 系统调用时彻底回收。
+但由于测试过程中，进程会创建成千上万个子线程，如果这些线程资源没有及时回收，如
+TrapContext, KenerlStack 等资源，会浪费许多内存资源。</p>
+<p>其实 <code>take_cancelled_chiled_thread(task)</code>这段代码本身，以及
+<code>CHILDREN_THREAD_MONITOR</code>变量，也就是说这段代码本身其实可以直接改为 <code>drop(task)</code>，
+因为此时 task 强引用计数一定为 1，task 中可以释放的资源都可以在, <code>schedule</code> 之前释放掉但是 task 在执行
+<code>exit_current_and_run_next</code>时本身出于内核态，此时回收 task 的 KerenlStack
+既不符合逻辑，又有可能产生一些隐患，故选择使用 <code>CHILDREN_THREAD_MONITOR</code> 在调度时释放退出的线程。</p>
+
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
     </div>
 </article>
 
@@ -306,10 +337,6 @@ if is_child_thread {
         <div>
             
             <span>
-                <a href="/tags/busybox/">busybox</a>
-            </span>
-            
-            <span>
                 <a href="/tags/debug/">Debug</a>
             </span>
             
@@ -322,6 +349,7 @@ if is_child_thread {
             </span>
             
             <span>
+<<<<<<< HEAD
                 <a href="/tags/oskernel/">OSKernel</a>
             </span>
             
@@ -343,6 +371,9 @@ if is_child_thread {
             
             <span>
                 <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
+=======
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
             </span>
             
             <span>
@@ -353,18 +384,26 @@ if is_child_thread {
                 <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
             </span>
             
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
+            </span>
+            
         </div>
     </div>
     <div class="sidebar-item sidebar-toc">
         <h3>Table of Contents</h3><nav id="TableOfContents">
   <ul>
-    <li>
-      <ul>
-        <li><a href="#tcb-与-fork-的更改">TCB 与 fork 的更改</a></li>
-        <li><a href="#线程的引入">线程的引入</a></li>
-        <li><a href="#进程线程的退出">进程/线程的退出</a></li>
-      </ul>
-    </li>
+    <li><a href="#tcb-与-fork-的更改">TCB 与 fork 的更改</a></li>
+    <li><a href="#线程的引入">线程的引入</a></li>
+    <li><a href="#进程线程的退出">进程/线程的退出</a></li>
   </ul>
 </nav></div>
 </aside>
@@ -423,10 +462,6 @@ if is_child_thread {
         <div>
             
             <span>
-                <a href="/tags/busybox/">busybox</a>
-            </span>
-            
-            <span>
                 <a href="/tags/debug/">Debug</a>
             </span>
             
@@ -439,6 +474,7 @@ if is_child_thread {
             </span>
             
             <span>
+<<<<<<< HEAD
                 <a href="/tags/oskernel/">OSKernel</a>
             </span>
             
@@ -460,6 +496,9 @@ if is_child_thread {
             
             <span>
                 <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
+=======
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
+>>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
             </span>
             
             <span>
@@ -468,6 +507,18 @@ if is_child_thread {
             
             <span>
                 <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
             </span>
             
         </div>
@@ -479,13 +530,9 @@ if is_child_thread {
         <h3>Table of Contents</h3>
         <nav id="TableOfContents">
   <ul>
-    <li>
-      <ul>
-        <li><a href="#tcb-与-fork-的更改">TCB 与 fork 的更改</a></li>
-        <li><a href="#线程的引入">线程的引入</a></li>
-        <li><a href="#进程线程的退出">进程/线程的退出</a></li>
-      </ul>
-    </li>
+    <li><a href="#tcb-与-fork-的更改">TCB 与 fork 的更改</a></li>
+    <li><a href="#线程的引入">线程的引入</a></li>
+    <li><a href="#进程线程的退出">进程/线程的退出</a></li>
   </ul>
 </nav>
     </div>

@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#ffffff" />
 
 
-<title>[全国赛I] busybox 预加载 - BiteTheDisk 小站</title>
+<title>优化 - BiteTheDisk 小站</title>
 
 
 <meta name="author" content="BiteTheDisk" />
@@ -31,25 +31,14 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
-<<<<<<< HEAD
-<meta name="keywords" content="busybox, 全国赛I" />
-=======
-<meta name="keywords" content="全国赛第一阶段" />
->>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
+<link rel="alternate" type="application/rss+xml" href="https://bitethedisk.github.io/tags/%E4%BC%98%E5%8C%96/index.xml" title="BiteTheDisk 小站" />
 
-
-<meta property="og:title" content="[全国赛I] busybox 预加载" />
-<meta name="twitter:title" content="[全国赛I] busybox 预加载" />
-<meta property="og:type" content="article" />
-<<<<<<< HEAD
-<meta property="og:url" content="https://bitethedisk.github.io/post/busybox-pre-init/" /><meta property="og:description" content="由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。" />
-<meta name="twitter:description" content="由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
-=======
-<meta property="og:url" content="https://bitethedisk.github.io/post/busybox-pre-init/" /><meta property="og:description" content="由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。" />
-<meta name="twitter:description" content="由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
->>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
+<meta property="og:title" content="优化" />
+<meta name="twitter:title" content="优化" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://bitethedisk.github.io/tags/%E4%BC%98%E5%8C%96/" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-01T18:37:11+08:00" /><meta property="article:modified_time" content="2023-08-01T18:37:11+08:00" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-17T17:28:13+08:00" />
 
 
 <style>
@@ -112,84 +101,35 @@
             
             <div class="col-12 col-md-9 float-left content">
                 
-<article>
-    
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/busybox-pre-init/">[全国赛I] busybox 预加载</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;291 words</span>
-
-<<<<<<< HEAD
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/busybox">busybox</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
-=======
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
->>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
-
-    </div>
-    
-    <div class="post-content markdown-body">
-<<<<<<< HEAD
-        <p>由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。</p>
-=======
-        <p>由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。</p>
-<p>具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf
-信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。</p>
->>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
-<pre><code class="language-rust">// kernel/src/task/initproc/mod.rs
-pub static ref BUSYBOX: RwLock&lt;Busybox&gt; = RwLock::new({
-    extern &quot;C&quot; {
-        fn busybox_entry();
-        fn busybox_tail();
-    }
-    let entry = busybox_entry as usize;
-    let tail = busybox_tail as usize;
-    let siz = tail - entry;
-
-    let busybox = unsafe { core::slice::from_raw_parts(entry as *const u8, siz) };
-    let path = AbsolutePath::from_str(&quot;/busybox0&quot;);
-
-    let inode = fs::open(path, OpenFlags::O_CREATE, CreateMode::empty()).expect(&quot;busybox0 create failed&quot;);
-    inode.write_all(&amp;busybox.to_owned());
-
-    let bb = Arc::new(TaskControlBlock::new(inode.clone()));
-    inode.delete();
-    Busybox {
-        inner: bb,
-    }
-});
-
-pub static mut ONCE_BB_ENTRY: usize = 0;
-pub static mut ONCE_BB_AUX: Vec&lt;AuxEntry&gt; = Vec::new();
-
-pub struct Busybox {
-    inner: Arc&lt;TaskControlBlock&gt;,
-}
-
-impl Busybox {
-    pub fn elf_entry_point(&amp;self) -&gt; usize {
-        unsafe { ONCE_BB_ENTRY }
-    }
-    pub fn aux(&amp;self) -&gt; Vec&lt;AuxEntry&gt; {
-        unsafe { ONCE_BB_AUX.clone() }
-    }
-    pub fn memory_set(&amp;self) -&gt; MemorySet {
-        let mut write = self.inner.memory_set.write();
-        MemorySet::from_copy_on_write(&amp;mut write)
-    }
-}
-</code></pre>
-    </div>
-</article>
+<div class="page-info">
+  <span>Posts with the tag 优化: </span>
+</div>
 
 
-<div class="license markdown-body">
-    <blockquote>
-        <p>Unless otherwise noted, the content of this site is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
-               target="_blank">CC BY-NC-SA 4.0</a>.</p>
-    </blockquote>
+
+<div class="post">
+  <h2 class="post-item post-title">
+    <a href="https://bitethedisk.github.io/post/fs-optimization/">文件系统优化历程</a>
+  </h2>
+  <div class="post-item post-meta">
+    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-17</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2233 words</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E4%BC%98%E5%8C%96">优化</a>&nbsp;</span>
+
+  </div>
+  <div class="post-item post-summary markdown-body">
+    <h1 id="文件系统优化历程">文件系统优化历程</h1>
+<p>我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口
+<code>BlockDevice</code> 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate
+来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。
+同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。</p>
+<p>虽然我们在内核中给出了虚拟文件的抽象 File Trait，但是由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode
+层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，这导致每次写入数据都会同步到磁盘，此时 BlockCache
+缓存块的作用微乎其微。</p>
+  </div>
 </div>
 
 
@@ -240,39 +180,11 @@ impl Busybox {
             </span>
             
             <span>
-                <a href="/tags/ffi/">FFI</a>
-            </span>
-            
-            <span>
                 <a href="/tags/makefile/">Makefile</a>
             </span>
             
             <span>
-<<<<<<< HEAD
-                <a href="/tags/oskernel/">OSKernel</a>
-            </span>
-            
-            <span>
-                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
-            </span>
-            
-            <span>
-                <a href="/tags/process/">process</a>
-            </span>
-            
-            <span>
-                <a href="/tags/rustworkspace/">RustWorkspace</a>
-            </span>
-            
-            <span>
-                <a href="/tags/thread/">thread</a>
-            </span>
-            
-            <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
-=======
                 <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
->>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
             </span>
             
             <span>
@@ -297,8 +209,9 @@ impl Busybox {
             
         </div>
     </div>
-    <div class="sidebar-item sidebar-toc">
-        <h3>Table of Contents</h3><nav id="TableOfContents"></nav></div>
+    
+    
+    
 </aside>
 
         </div>
@@ -359,39 +272,11 @@ impl Busybox {
             </span>
             
             <span>
-                <a href="/tags/ffi/">FFI</a>
-            </span>
-            
-            <span>
                 <a href="/tags/makefile/">Makefile</a>
             </span>
             
             <span>
-<<<<<<< HEAD
-                <a href="/tags/oskernel/">OSKernel</a>
-            </span>
-            
-            <span>
-                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
-            </span>
-            
-            <span>
-                <a href="/tags/process/">process</a>
-            </span>
-            
-            <span>
-                <a href="/tags/rustworkspace/">RustWorkspace</a>
-            </span>
-            
-            <span>
-                <a href="/tags/thread/">thread</a>
-            </span>
-            
-            <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
-=======
                 <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
->>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
             </span>
             
             <span>
@@ -415,13 +300,6 @@ impl Busybox {
             </span>
             
         </div>
-    </div>
-    
-    
-    
-    <div class="sidebar-item sidebar-toc">
-        <h3>Table of Contents</h3>
-        <nav id="TableOfContents"></nav>
     </div>
     
     

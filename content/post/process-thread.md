@@ -1,13 +1,16 @@
 ---
 title: "[全国赛I] 进程管理-进程与线程"
 date: 2023-08-01T18:37:11+08:00
-tags: ["process", "thread", "全国赛I"]
+tags: ["进程", "线程", "全国赛第一阶段"]
 draft: false
 ---
 
-### TCB 与 fork 的更改
+## TCB 与 fork 的更改
 
-相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。
+相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux
+manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。
+
+<!--more-->
 
 <!--more-->
 
@@ -75,7 +78,7 @@ if flags.contains(CloneFlags::SETTLS) {
 
 
 
-### 线程的引入
+## 线程的引入
 
 在 fork 过程中，当 CloneFlags 中存在 CLONE_THREAD 位时，正在创建的进程当前进程的为子线程
 
@@ -121,9 +124,7 @@ pub fn trap_context_position(tid: usize) -> VirtAddr {
 
 其中，private_tid 为tgid(主线程/父进程)与pid(子线程tid)的差值
 
-
-
-### 进程/线程的退出
+## 进程/线程的退出
 
 当前进程结束的方式包括：
 
@@ -166,6 +167,12 @@ if is_child_thread {
 }
 ```
 
-这个过程本身其实可以不用做，而是等主线程进行 wait 系统调用时彻底回收。但由于测试过程中，进程会创建成千上万个子线程，如果这些线程资源没有及时回收，如 TrapContext, KenerlStack 等资源，会浪费许多内存资源。
+这个过程本身其实可以不用做，而是等主线程进行 wait 系统调用时彻底回收。
+但由于测试过程中，进程会创建成千上万个子线程，如果这些线程资源没有及时回收，如
+TrapContext, KenerlStack 等资源，会浪费许多内存资源。
 
-其实 `take_cancelled_chiled_thread(task)`这段代码本身，以及 `CHILDREN_THREAD_MONITOR`变量，也就是说这段代码本身其实可以直接改为 `drop(task)`，因为此时 task 强引用计数一定为 1，task 中可以释放的资源都可以在, `schedule` 之前释放掉但是 task 在执行 `exit_current_and_run_next`时本身出于内核态，此时回收 task 的 KerenlStack 既不符合逻辑，又有可能产生一些隐患，故选择使用 `CHILDREN_THREAD_MONITOR` 在调度时释放退出的线程。
+其实 `take_cancelled_chiled_thread(task)`这段代码本身，以及
+`CHILDREN_THREAD_MONITOR`变量，也就是说这段代码本身其实可以直接改为 `drop(task)`，
+因为此时 task 强引用计数一定为 1，task 中可以释放的资源都可以在, `schedule` 之前释放掉但是 task 在执行
+`exit_current_and_run_next`时本身出于内核态，此时回收 task 的 KerenlStack
+既不符合逻辑，又有可能产生一些隐患，故选择使用 `CHILDREN_THREAD_MONITOR` 在调度时释放退出的线程。

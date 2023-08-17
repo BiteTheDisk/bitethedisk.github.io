@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>进程 on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/%E8%BF%9B%E7%A8%8B/</link>
+    <description>Recent content in 进程 on BiteTheDisk 小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 01 Aug 2023 18:37:11 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/%E8%BF%9B%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[全国赛I] 进程/线程调度</title>
+      <link>https://bitethedisk.github.io/post/scheduling/</link>
+      <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/scheduling/</guid>
+      <description>在我们的内核中，我们使用 TASKMANAGER 管理分别处于就绪态，阻塞态的进程，包括因为调用 nanosleep 而休眠的进程。 // kernel/src/task/manager.rs // 负责管理待调度的进程对象 pub struct TaskManager { ready_queue: VecDeque&amp;lt;Arc&amp;lt;TaskControlBlock&amp;gt;&amp;gt;, waiting_queue: VecDeque&amp;lt;Arc&amp;lt;TaskControlBlock&amp;gt;&amp;gt;, hq: BinaryHeap&amp;lt;HangingTask&amp;gt;, } // 用于管理 sleep 进程 pub struct HangingTask { wake_up_time: usize, // ns inner: Arc&amp;lt;TaskControlBlock&amp;gt;, } // 用于处理子线程的资源</description>
+    </item>
+    
+    <item>
+      <title>[全国赛I] 进程管理-进程与线程</title>
+      <link>https://bitethedisk.github.io/post/process-thread/</link>
+      <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/process-thread/</guid>
+      <description>TCB 与 fork 的更改 相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。 // kernel/task/task.rs pub struct TaskControlBlock { ... pub sigactions: Arc&amp;lt;RwLock&amp;lt;[SigAction; MAX_SIGNUM as usize]&amp;gt;&amp;gt;, pub</description>
+    </item>
+    
+  </channel>
+</rss>

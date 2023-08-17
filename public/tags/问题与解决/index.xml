@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>问题与解决 on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/</link>
+    <description>Recent content in 问题与解决 on BiteTheDisk 小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 29 Jun 2023 21:42:09 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[已解决] 内核在执行用户程序时随机卡死</title>
+      <link>https://bitethedisk.github.io/post/random-stuck/</link>
+      <pubDate>Thu, 29 Jun 2023 21:42:09 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/random-stuck/</guid>
+      <description>&lt;p&gt;内核在运行的时候总是会不知何时卡死，底层原因是持续触发时钟中断&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,7 +1,7 @@
 ---
 title: "[全国赛I] 进程/线程调度"
 date: 2023-08-01T18:37:11+08:00
-tags: ["process", "thread", "全国赛I"]
+tags: ["进程", "线程", "全国赛第一阶段"]
 draft: false
 ---
 
@@ -78,7 +78,8 @@ pub fn run_tasks() {
 }
 ```
 
-值得一提的是，我们在进程调度时还需要检测 block_task 队列中，因为在系统调用过程中被信号打断的 task 是否有处理完信号，或者 futex_wait 时给出的 timeout 是否已超时以唤醒该进程并加入到 ready_task 中。
+值得一提的是，我们在进程调度时还需要检测 block_task 队列中， 因为在系统调用过程中被信号打断的 
+task 是否有处理完信号，或者 futex_wait 时给出的 timeout 是否已超时以唤醒该进程并加入到 ready_task 中。
 
 ```rust
 // kernel/src/task/manager.rs
@@ -101,6 +102,3 @@ pub fn check_futex_interupt_or_expire(&mut self) -> Option<Arc<TaskControlBlock>
         None
     }
 ```
-
-
-

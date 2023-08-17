@@ -1,7 +1,7 @@
 ---
-title: "[已解决]内核在执行用户程序时随机卡死"
+title: "[已解决] 内核在执行用户程序时随机卡死"
 date: 2023-06-29T21:42:09+08:00
-tags: ["Problems-&-Solutions"]
+tags: ["问题与解决"]
 draft: false
 ---
 

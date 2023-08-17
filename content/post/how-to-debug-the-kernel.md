@@ -1,7 +1,7 @@
 ---
-title: "开发中如调试内核"
+title: "如何调试 BTD-OS"
 date: 2023-06-30T18:34:54+08:00
-tags: ["OSKernel", "Debug"]
+tags: ["Debug"]
 draft: false
 ---
 

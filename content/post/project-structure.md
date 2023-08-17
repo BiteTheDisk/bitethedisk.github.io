@@ -1,10 +1,9 @@
 ---
-title: "[全国赛I]项目结构(rust-workspace不能使用)"
+title: "[全国赛I] 项目结构(rust-workspace不能使用)"
 date: 2023-06-30T19:29:29+08:00
-tags: ["全国赛I", "RustWorkspace"]
+tags: ["全国赛第一阶段"]
 draft: false
 ---
-
 
 随着开发的进行，我们需要的适配和封装的数据结构越来越多，其中大部分与我们的内核本体关系并没有那么紧密，
 所以我们将这部分结构，如用于的引导程序、FAT32、Linux 相关数据结构放在了项目根目录中的 `crates` 里
