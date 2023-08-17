@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hans">
 
 <head>
     
@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.116.1">
+<meta name="generator" content="Hugo 0.117.0">
 
 
 
@@ -38,7 +38,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bitethedisk.github.io/post/" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-01T23:11:47+08:00" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-17T17:28:13+08:00" />
 
 
 <style>
@@ -106,35 +106,60 @@
 
 <div class="post">
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/dynamic/">动态连接</a>
+        <a href="https://bitethedisk.github.io/post/fs-optimization/">文件系统优化历程</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-17</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;285 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2225 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E4%BC%98%E5%8C%96">优化</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
-        
+        <p>我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口
+<code>BlockDevice</code> 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate
+来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。
+同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。</p>
+<p>虽然我们在内核中给出了虚拟文件的抽象 File Trait，但是由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode
+层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，这导致每次写入数据都会同步到磁盘，此时 BlockCache
+缓存块的作用微乎其微。</p>
     </div>
 </div>
 
 <div class="post">
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/signal/">信号处理</a>
+        <a href="https://bitethedisk.github.io/post/dynamic/">动态链接</a>
     </h2>
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;884 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;285 字</span>
 
 <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
-        
+        <p>实现动态连接十分简单，只需要在加载elf文件时判断是否存在interpret段，如果存在就加载对应的动态连接器，
+将动态连接器内容映射进内存并将程序入口设置为动态连接器的入口。接下来动态连接器会完成剩下的连接工作。</p>
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/signal/">[全国赛I] 信号处理</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;884 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        <p>在目前的实现中信号总共有63种，1-31为非实时信号，34-63是实时信号。32和33为未定义信号。
+信号是每个进程独有的，除此之外每个进程还有信号掩码。</p>
     </div>
 </div>
 
@@ -145,13 +170,13 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;291 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;291 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/busybox">busybox</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
-        <p>由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。</p>
+        <p>由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。</p>
     </div>
 </div>
 
@@ -162,9 +187,9 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;536 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;536 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/process">process</a>&nbsp;<a href="/tags/thread">thread</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E8%BF%9B%E7%A8%8B">进程</a>&nbsp;<a href="/tags/%E7%BA%BF%E7%A8%8B">线程</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
@@ -179,27 +204,28 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1350 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1350 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/process">process</a>&nbsp;<a href="/tags/thread">thread</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E8%BF%9B%E7%A8%8B">进程</a>&nbsp;<a href="/tags/%E7%BA%BF%E7%A8%8B">线程</a>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
-        <h3 id="tcb-与-fork-的更改">TCB 与 fork 的更改</h3>
-<p>相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。</p>
+        <h2 id="tcb-与-fork-的更改">TCB 与 fork 的更改</h2>
+<p>相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux
+manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。</p>
     </div>
 </div>
 
 <div class="post">
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/project-structure/">[全国赛I]项目结构(rust-workspace不能使用)</a>
+        <a href="https://bitethedisk.github.io/post/project-structure/">[全国赛I] 项目结构(rust-workspace不能使用)</a>
     </h2>
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;748 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;748 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi">全国赛I</a>&nbsp;<a href="/tags/rustworkspace">RustWorkspace</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
@@ -218,7 +244,7 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;173 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;173 字</span>
 
 <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/makefile">Makefile</a>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;<a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B">区域赛</a>&nbsp;</span>
 
@@ -230,14 +256,14 @@
 
 <div class="post">
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/how-to-debug-the-kernel/">开发中如调试内核</a>
+        <a href="https://bitethedisk.github.io/post/how-to-debug-the-kernel/">如何调试 BTD-OS</a>
     </h2>
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;396 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;396 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/oskernel">OSKernel</a>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
@@ -248,14 +274,14 @@
 
 <div class="post">
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/random-stuck/">[已解决]内核在执行用户程序时随机卡死</a>
+        <a href="https://bitethedisk.github.io/post/random-stuck/">[已解决] 内核在执行用户程序时随机卡死</a>
     </h2>
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-29</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1107 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1107 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/problems--solutions">Problems-&amp;-Solutions</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3">问题与解决</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
@@ -267,7 +293,7 @@
             <aside class="col-12 col-md-3 float-left sidebar">
     
     <div class="sidebar-item sidebar-pages">
-        <h3>Pages</h3>
+        <h3>页面</h3>
         <ul>
             
             <li>
@@ -290,7 +316,7 @@
     </div>
     
     <div class="sidebar-item sidebar-links">
-        <h3>Links</h3>
+        <h3>链接</h3>
         <ul>
             
             <li>
@@ -301,12 +327,8 @@
     </div>
     
     <div class="sidebar-item sidebar-tags">
-        <h3>Tags</h3>
+        <h3>标签</h3>
         <div>
-            
-            <span>
-                <a href="/tags/busybox/">busybox</a>
-            </span>
             
             <span>
                 <a href="/tags/debug/">Debug</a>
@@ -317,27 +339,7 @@
             </span>
             
             <span>
-                <a href="/tags/oskernel/">OSKernel</a>
-            </span>
-            
-            <span>
-                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
-            </span>
-            
-            <span>
-                <a href="/tags/process/">process</a>
-            </span>
-            
-            <span>
-                <a href="/tags/rustworkspace/">RustWorkspace</a>
-            </span>
-            
-            <span>
-                <a href="/tags/thread/">thread</a>
-            </span>
-            
-            <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
             </span>
             
             <span>
@@ -346,6 +348,18 @@
             
             <span>
                 <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
             </span>
             
         </div>
@@ -371,7 +385,7 @@
   <div class="sidebar-wrapper">
     
     <div class="sidebar-item sidebar-pages">
-        <h3>Pages</h3>
+        <h3>页面</h3>
         <ul>
             
             <li>
@@ -394,7 +408,7 @@
     </div>
     
     <div class="sidebar-item sidebar-links">
-        <h3>Links</h3>
+        <h3>链接</h3>
         <ul>
             
             <li>
@@ -405,12 +419,8 @@
     </div>
     
     <div class="sidebar-item sidebar-tags">
-        <h3>Tags</h3>
+        <h3>标签</h3>
         <div>
-            
-            <span>
-                <a href="/tags/busybox/">busybox</a>
-            </span>
             
             <span>
                 <a href="/tags/debug/">Debug</a>
@@ -421,27 +431,7 @@
             </span>
             
             <span>
-                <a href="/tags/oskernel/">OSKernel</a>
-            </span>
-            
-            <span>
-                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
-            </span>
-            
-            <span>
-                <a href="/tags/process/">process</a>
-            </span>
-            
-            <span>
-                <a href="/tags/rustworkspace/">RustWorkspace</a>
-            </span>
-            
-            <span>
-                <a href="/tags/thread/">thread</a>
-            </span>
-            
-            <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
             </span>
             
             <span>
@@ -452,13 +442,25 @@
                 <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
             </span>
             
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
+            </span>
+            
         </div>
     </div>
     
     
     
     <div class="sidebar-item sidebar-toc">
-        <h3>Table of Contents</h3>
+        <h3>目录</h3>
         
     </div>
     
@@ -474,9 +476,9 @@
             <span>&copy; 2023-2023
                 <a href="https://bitethedisk.github.io/">BiteTheDisk</a>
                  | <a href="https://github.com/BiteTheDisk/bitethedisk.github.io">Source code</a> 
-                | Powered by <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
+                | 基于 <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
                    target="_blank">Fuji-v2</a> &amp; <a href="https://gohugo.io/"
-                                                    target="_blank">Hugo</a> 
+                                                    target="_blank">Hugo</a> 构建
             </span>
         </div>
     </div>

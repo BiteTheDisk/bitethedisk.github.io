@@ -36,6 +36,15 @@
     </item>
     
     <item>
+      <title>适配 OpenSBI</title>
+      <link>https://bitethedisk.github.io/post/opensbi-getchar/</link>
+      <pubDate>Wed, 12 Jul 2023 17:17:35 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/opensbi-getchar/</guid>
+      <description>一开始</description>
+    </item>
+    
+    <item>
       <title>[全国赛I]项目结构(rust-workspace不能使用)</title>
       <link>https://bitethedisk.github.io/post/project-structure/</link>
       <pubDate>Fri, 30 Jun 2023 19:29:29 +0800</pubDate>

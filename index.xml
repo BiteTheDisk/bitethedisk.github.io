@@ -5,24 +5,41 @@
     <link>https://bitethedisk.github.io/</link>
     <description>Recent content on BiteTheDisk 小站</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <lastBuildDate>Tue, 01 Aug 2023 23:11:47 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <language>zh-hans</language>
+    <lastBuildDate>Thu, 17 Aug 2023 17:28:13 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>动态连接</title>
+      <title>文件系统优化历程</title>
+      <link>https://bitethedisk.github.io/post/fs-optimization/</link>
+      <pubDate>Thu, 17 Aug 2023 17:28:13 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/fs-optimization/</guid>
+      <description>&lt;p&gt;我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口
+&lt;code&gt;BlockDevice&lt;/code&gt; 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate
+来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。
+同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。&lt;/p&gt;
+&lt;p&gt;虽然我们在内核中给出了虚拟文件的抽象 File Trait，但是由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode
+层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，这导致每次写入数据都会同步到磁盘，此时 BlockCache
+缓存块的作用微乎其微。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>动态链接</title>
       <link>https://bitethedisk.github.io/post/dynamic/</link>
       <pubDate>Tue, 01 Aug 2023 23:11:47 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/post/dynamic/</guid>
-      <description></description>
+      <description>&lt;p&gt;实现动态连接十分简单，只需要在加载elf文件时判断是否存在interpret段，如果存在就加载对应的动态连接器，
+将动态连接器内容映射进内存并将程序入口设置为动态连接器的入口。接下来动态连接器会完成剩下的连接工作。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>信号处理</title>
+      <title>[全国赛I] 信号处理</title>
       <link>https://bitethedisk.github.io/post/signal/</link>
       <pubDate>Tue, 01 Aug 2023 21:17:37 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/post/signal/</guid>
-      <description></description>
+      <description>&lt;p&gt;在目前的实现中信号总共有63种，1-31为非实时信号，34-63是实时信号。32和33为未定义信号。
+信号是每个进程独有的，除此之外每个进程还有信号掩码。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -31,7 +48,7 @@
       <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/post/busybox-pre-init/</guid>
-      <description>&lt;p&gt;由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox 进程从而实现更高效的测试。&lt;/p&gt;</description>
+      <description>&lt;p&gt;由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载initproc的方法。&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -49,12 +66,13 @@
       <pubDate>Tue, 01 Aug 2023 18:37:11 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/post/process-thread/</guid>
-      <description>&lt;h3 id=&#34;tcb-与-fork-的更改&#34;&gt;TCB 与 fork 的更改&lt;/h3&gt;
-&lt;p&gt;相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。&lt;/p&gt;</description>
+      <description>&lt;h2 id=&#34;tcb-与-fork-的更改&#34;&gt;TCB 与 fork 的更改&lt;/h2&gt;
+&lt;p&gt;相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux
+manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>[全国赛I]项目结构(rust-workspace不能使用)</title>
+      <title>[全国赛I] 项目结构(rust-workspace不能使用)</title>
       <link>https://bitethedisk.github.io/post/project-structure/</link>
       <pubDate>Fri, 30 Jun 2023 19:29:29 +0800</pubDate>
       
@@ -76,7 +94,7 @@
     </item>
     
     <item>
-      <title>开发中如调试内核</title>
+      <title>如何调试 BTD-OS</title>
       <link>https://bitethedisk.github.io/post/how-to-debug-the-kernel/</link>
       <pubDate>Fri, 30 Jun 2023 18:34:54 +0800</pubDate>
       
@@ -86,7 +104,7 @@
     </item>
     
     <item>
-      <title>[已解决]内核在执行用户程序时随机卡死</title>
+      <title>[已解决] 内核在执行用户程序时随机卡死</title>
       <link>https://bitethedisk.github.io/post/random-stuck/</link>
       <pubDate>Thu, 29 Jun 2023 21:42:09 +0800</pubDate>
       
@@ -95,12 +113,12 @@
     </item>
     
     <item>
-      <title>关于我们</title>
+      <title>关于</title>
       <link>https://bitethedisk.github.io/about/</link>
       <pubDate>Sat, 11 Apr 2020 19:15:32 +0800</pubDate>
       
       <guid>https://bitethedisk.github.io/about/</guid>
-      <description>BTD OS 是使用 Rust 语言开发的宏内核操作系统，可运行于 RISC-V64 平台，并实现了中断与异常处理、进 程管理、内存管理以及文件系统等操作系统基本模块。目前，BTD OS 支持在 QEMU 虚拟环境中运行。 BTD OS 的总体目标是设计一款简洁小巧、</description>
+      <description>BTD-OS 是使用 Rust 语言开发的宏内核操作系统，基于 riscv64 架构，可运行与 qemu/fu740 平台， BTD-OS 实现了中断与异常处理、进程管理、内存管理以及文件系统等操作系统基本模块。 BTD-OS 的总体目标是设计一款简洁小巧、结构清晰、基本功能完善、可拓展</description>
     </item>
     
   </channel>
