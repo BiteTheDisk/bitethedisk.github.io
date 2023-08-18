@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#ffffff" />
 
 
-<title>FFI - BiteTheDisk 小站</title>
+<title>fat32 - BiteTheDisk 小站</title>
 
 
 <meta name="author" content="BiteTheDisk" />
@@ -31,14 +31,14 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
-<link rel="alternate" type="application/rss+xml" href="https://bitethedisk.github.io/tags/ffi/index.xml" title="BiteTheDisk 小站" />
+<link rel="alternate" type="application/rss+xml" href="https://bitethedisk.github.io/tags/fat32/index.xml" title="BiteTheDisk 小站" />
 
-<meta property="og:title" content="FFI" />
-<meta name="twitter:title" content="FFI" />
+<meta property="og:title" content="fat32" />
+<meta name="twitter:title" content="fat32" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://bitethedisk.github.io/tags/ffi/" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta property="og:url" content="https://bitethedisk.github.io/tags/fat32/" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-01T21:31:27+08:00" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-17T17:28:13+08:00" />
 
 
 <style>
@@ -103,30 +103,25 @@
                 
 
 <div class="page-info">
-  <span>拥有标签 FFI 的文章：</span>
+  <span>拥有标签 fat32 的文章：</span>
 </div>
 
 
 
 <div class="post">
   <h2 class="post-item post-title">
-    <a href="https://bitethedisk.github.io/post/rust-and-c/">Rust 和 C 的交互</a>
+    <a href="https://bitethedisk.github.io/post/fs-optimization/">[Docs] 文件系统优化历程</a>
   </h2>
   <div class="post-item post-meta">
-    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
+    <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-17</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;711 字</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2361 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;<a href="/tags/ffi">FFI</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E4%BC%98%E5%8C%96">优化</a>&nbsp;<a href="/tags/docs">Docs</a>&nbsp;<a href="/tags/page-cahce">page cahce</a>&nbsp;<a href="/tags/fat32">fat32</a>&nbsp;</span>
 
   </div>
   <div class="post-item post-summary markdown-body">
-    <p>在 Rust 中，字符串是一个胖指针，包括具有所有权的 <code>String</code> 以及 <code>&amp;'a str</code>，并且为 utf-8 编码</p>
-<p>而在 C 中，字符串只是一个单纯的指针，以有符号的 <code>i8</code> 为单元，以 <code>\0</code>
-作为结尾，长度不包括结尾 &lsquo;\0&rsquo;</p>
-<p>在使用 Rust 编写 initrpoc 和
-系统调用的时候，由于测例所要求的的接口所使用的的字符串相关参数均为 C
-标准，所以我们需要将 Rust 和 C 之间的字符串进行转换</p>
+    我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理
   </div>
 </div>
 
