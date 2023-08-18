@@ -6,7 +6,25 @@
     <description>Recent content in Docs on BiteTheDisk 小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Sat, 19 Aug 2023 00:30:10 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/docs/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 19 Aug 2023 00:37:29 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/docs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[Docs] 任务控制块</title>
+      <link>https://bitethedisk.github.io/post/task_control_block/</link>
+      <pubDate>Sat, 19 Aug 2023 00:37:29 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/task_control_block/</guid>
+      <description>&lt;p&gt;应用程序的一次执行过程称为一个任务。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[Docs] 系统设计与整体架构</title>
+      <link>https://bitethedisk.github.io/post/overall_architecture/</link>
+      <pubDate>Sat, 19 Aug 2023 00:33:07 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/overall_architecture/</guid>
+      <description>&lt;p&gt;RISC-V架构定义了4种特权级别，其中只有M模式是必须实现的，其余特权级别可以根据运行在CPU上的应用需求进行调整。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>[Docs] 概述</title>
       <link>https://bitethedisk.github.io/post/overview/</link>

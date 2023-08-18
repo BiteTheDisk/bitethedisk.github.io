@@ -38,7 +38,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bitethedisk.github.io/" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-19T00:33:07+08:00" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-19T00:37:29+08:00" />
 
 
 <style>
@@ -106,14 +106,31 @@
 
 <div class="post">
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/overall_architecture/">系统设计与整体架构</a>
+        <a href="https://bitethedisk.github.io/post/task_control_block/">[Docs] 任务控制块</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-19</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;803 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/docs">Docs</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        <p>应用程序的一次执行过程称为一个任务。</p>
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/overall_architecture/">[Docs] 系统设计与整体架构</a>
     </h2>
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-19</span>
 
 <span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1085 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;无标签</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/docs">Docs</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
@@ -145,19 +162,13 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-17</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2225 字</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2370 字</span>
 
 <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E4%BC%98%E5%8C%96">优化</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
-        <p>我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口
-<code>BlockDevice</code> 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate
-来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。
-同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。</p>
-<p>虽然我们在内核中给出了虚拟文件的抽象 File Trait，但是由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode
-层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，这导致每次写入数据都会同步到磁盘，此时 BlockCache
-缓存块的作用微乎其微。</p>
+        文件系统优化历程 我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了
     </div>
 </div>
 
@@ -269,27 +280,6 @@
         <h2 id="tcb-与-fork-的更改">TCB 与 fork 的更改</h2>
 <p>相较于初赛，完善了 clone 系统调用。初赛时由于要求测试样例要求比较低，在实现 clone 系统调用时并未完全利用用户传递的参数。我们根据 Linux
 manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结构。</p>
-    </div>
-</div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/project-structure/">[全国赛I] 项目结构(rust-workspace不能使用)</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;748 字</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        <p>随着开发的进行，我们需要的适配和封装的数据结构越来越多，其中大部分与我们的内核本体关系并没有那么紧密，
-所以我们将这部分结构，如用于的引导程序、FAT32、Linux 相关数据结构放在了项目根目录中的 <code>crates</code> 里</p>
-<p>Rust 本身是支持多个 <code>crates</code> 构成的一个 <code>workspace</code>，这些 <code>crates</code> 直接可以相互引用，但是由于我们使用
-了 <code>.cargo/config.toml</code> 来配置 rustc，所以 <code>workspace</code> 并不能为我们所有 (因为目前 <code>workspace</code>
-不支持在 <code>workspace</code> 中读取 <code>.cargo/config.toml</code>)</p>
     </div>
 </div>
 <div class="pagination"><div class="pag-item pag-current">
