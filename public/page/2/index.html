@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hans">
 
 <head>
     
@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.111.3">
+<meta name="generator" content="Hugo 0.117.0">
 
 
 
@@ -38,7 +38,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://bitethedisk.github.io/" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-01T21:31:27+08:00" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="og:updated_time" content="2023-08-19T00:37:29+08:00" />
 
 
 <style>
@@ -106,14 +106,104 @@
 
 <div class="post">
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/random-stuck/">[已解决]内核在执行用户程序时随机卡死</a>
+        <a href="https://bitethedisk.github.io/post/opensbi-getchar/">适配 OpenSBI</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-07-12</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;3 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        一开始
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/rust-heap-and-c/">Rust Heap and C</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-07-07</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;122 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;无标签</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        Rust 和 C 交互的时候需要注意 Rust 的堆，当从 Rust 程序 fork 出一个进程 来执行 C 程序的时候，C 是不能识别 Rust 的堆的(包括其堆管理器这些)，所以当 使用 C 程序去访问 fork 后的 Rust 堆上的对象，或者传递相关堆上对象的时候可能 会产生致命
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/project-structure/">[全国赛I] 项目结构(rust-workspace不能使用)</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;748 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        <p>随着开发的进行，我们需要的适配和封装的数据结构越来越多，其中大部分与我们的内核本体关系并没有那么紧密，
+所以我们将这部分结构，如用于的引导程序、FAT32、Linux 相关数据结构放在了项目根目录中的 <code>crates</code> 里</p>
+<p>Rust 本身是支持多个 <code>crates</code> 构成的一个 <code>workspace</code>，这些 <code>crates</code> 直接可以相互引用，但是由于我们使用
+了 <code>.cargo/config.toml</code> 来配置 rustc，所以 <code>workspace</code> 并不能为我们所有 (因为目前 <code>workspace</code>
+不支持在 <code>workspace</code> 中读取 <code>.cargo/config.toml</code>)</p>
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/about-makefile/">[区域赛] 有关 BTD 的 Makefile</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;173 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/makefile">Makefile</a>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;<a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B">区域赛</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        <p>项目提供了一系列的 Makefile 来简化开发流程.</p>
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/how-to-debug-the-kernel/">如何调试 BTD-OS</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-30</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;396 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/debug">Debug</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        <p>在 BTD 的开发中经常会遇到 debug 的需求，BTD 提供了一个方便的调试流程，只需启动两个 shell 即可
+开始调试</p>
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/random-stuck/">[已解决] 内核在执行用户程序时随机卡死</a>
     </h2>
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-29</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1107 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1107 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/problems--solutions">Problems-&amp;-Solutions</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3">问题与解决</a>&nbsp;</span>
 
     </div>
     <div class="post-item post-summary markdown-body">
@@ -133,7 +223,7 @@
             <aside class="col-12 col-md-3 float-left sidebar">
     
     <div class="sidebar-item sidebar-pages">
-        <h3>Pages</h3>
+        <h3>页面</h3>
         <ul>
             
             <li>
@@ -156,7 +246,7 @@
     </div>
     
     <div class="sidebar-item sidebar-links">
-        <h3>Links</h3>
+        <h3>链接</h3>
         <ul>
             
             <li>
@@ -167,15 +257,15 @@
     </div>
     
     <div class="sidebar-item sidebar-tags">
-        <h3>Tags</h3>
+        <h3>标签</h3>
         <div>
             
             <span>
-                <a href="/tags/busybox/">busybox</a>
+                <a href="/tags/debug/">Debug</a>
             </span>
             
             <span>
-                <a href="/tags/debug/">Debug</a>
+                <a href="/tags/docs/">Docs</a>
             </span>
             
             <span>
@@ -187,27 +277,7 @@
             </span>
             
             <span>
-                <a href="/tags/oskernel/">OSKernel</a>
-            </span>
-            
-            <span>
-                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
-            </span>
-            
-            <span>
-                <a href="/tags/process/">process</a>
-            </span>
-            
-            <span>
-                <a href="/tags/rustworkspace/">RustWorkspace</a>
-            </span>
-            
-            <span>
-                <a href="/tags/thread/">thread</a>
-            </span>
-            
-            <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
             </span>
             
             <span>
@@ -216,6 +286,18 @@
             
             <span>
                 <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
             </span>
             
         </div>
@@ -241,7 +323,7 @@
   <div class="sidebar-wrapper">
     
     <div class="sidebar-item sidebar-pages">
-        <h3>Pages</h3>
+        <h3>页面</h3>
         <ul>
             
             <li>
@@ -264,7 +346,7 @@
     </div>
     
     <div class="sidebar-item sidebar-links">
-        <h3>Links</h3>
+        <h3>链接</h3>
         <ul>
             
             <li>
@@ -275,15 +357,15 @@
     </div>
     
     <div class="sidebar-item sidebar-tags">
-        <h3>Tags</h3>
+        <h3>标签</h3>
         <div>
             
             <span>
-                <a href="/tags/busybox/">busybox</a>
+                <a href="/tags/debug/">Debug</a>
             </span>
             
             <span>
-                <a href="/tags/debug/">Debug</a>
+                <a href="/tags/docs/">Docs</a>
             </span>
             
             <span>
@@ -295,27 +377,7 @@
             </span>
             
             <span>
-                <a href="/tags/oskernel/">OSKernel</a>
-            </span>
-            
-            <span>
-                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
-            </span>
-            
-            <span>
-                <a href="/tags/process/">process</a>
-            </span>
-            
-            <span>
-                <a href="/tags/rustworkspace/">RustWorkspace</a>
-            </span>
-            
-            <span>
-                <a href="/tags/thread/">thread</a>
-            </span>
-            
-            <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
             </span>
             
             <span>
@@ -324,6 +386,18 @@
             
             <span>
                 <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
             </span>
             
         </div>
@@ -341,9 +415,9 @@
             <span>&copy; 2023-2023
                 <a href="https://bitethedisk.github.io/">BiteTheDisk</a>
                  | <a href="https://github.com/BiteTheDisk/bitethedisk.github.io">Source code</a> 
-                | Powered by <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
+                | 基于 <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
                    target="_blank">Fuji-v2</a> &amp; <a href="https://gohugo.io/"
-                                                    target="_blank">Hugo</a> 
+                                                    target="_blank">Hugo</a> 构建
             </span>
         </div>
     </div>

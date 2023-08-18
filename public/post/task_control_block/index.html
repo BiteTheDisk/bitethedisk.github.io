@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="HandheldFriendly" content="True" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta name="generator" content="Hugo 0.117.0">
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon-16x16.png" />
+<link rel="manifest" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/site.webmanifest" />
+<link rel="mask-icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/safari-pinned-tab.svg" color="#8aa2d3" />
+<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/amzrk2/cdn-stcapi@1/favicons/favicon.ico" />
+<meta name="theme-color" content="#ffffff" />
+
+
+<title>任务控制块 - BiteTheDisk 小站</title>
+
+
+<meta name="author" content="BiteTheDisk" />
+
+
+<meta name="description" content="A minimal Hugo theme with nice theme color." />
+
+
+
+<meta property="og:title" content="任务控制块" />
+<meta name="twitter:title" content="任务控制块" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/task_control_block/" /><meta property="og:description" content="应用程序的一次执行过程称为一个任务。" />
+<meta name="twitter:description" content="应用程序的一次执行过程称为一个任务。" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-19T00:37:29+08:00" /><meta property="article:modified_time" content="2023-08-19T00:37:29+08:00" />
+
+
+<style>
+    @media (prefers-color-scheme: dark) {
+        body[data-theme='auto'] img {
+            filter: brightness(60%);
+        }
+    }
+
+    body[data-theme='dark'] img {
+        filter: brightness(60%);
+    }
+</style>
+
+
+
+
+<link rel="stylesheet" href="https://bitethedisk.github.io/assets/css/fuji.min.b4a21b5d3eb1d0a51297e31230a65fc25e387843e45ec3a2d9176cd8d163c216d99b9b13a618b28f537c3b559ec8a408183b0fbfad48daddb9befa7d3ef90eed.css" integrity="sha512-tKIbXT6x0KUSl&#43;MSMKZfwl44eEPkXsOi2Rds2NFjwhbZm5sTphiyj1N8O1WeyKQIGDsPv61I2t25vvp9PvkO7Q==" />
+
+
+
+
+
+
+
+
+</head>
+
+<body
+  data-theme="auto"
+  data-theme-auto='true'
+  >
+    <script data-cfasync="false">
+  
+  var fujiThemeData = localStorage.getItem('fuji_data-theme');
+  
+  if (!fujiThemeData) {
+    localStorage.setItem('fuji_data-theme', 'auto');
+  } else {
+    
+    if (fujiThemeData !== 'auto') {
+      document.body.setAttribute('data-theme', fujiThemeData === 'dark' ? 'dark' : 'light');
+    }
+  }
+</script>
+
+    <header>
+    <div class="container-lg clearfix">
+        <div class="col-12 header">
+            <a class="title-main" href="https://bitethedisk.github.io/">BiteTheDisk 小站</a>
+            
+            <span class="title-sub">BiteTheDisk OS kernel 开发小记</span>
+            
+        </div>
+    </div>
+</header>
+
+    <main>
+        <div class="container-lg clearfix">
+            
+            <div class="col-12 col-md-9 float-left content">
+                
+<article>
+    
+    <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/task_control_block/">任务控制块</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-19</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;803 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;无标签</span>
+
+    </div>
+    
+    <div class="post-content markdown-body">
+        <p>应用程序的一次执行过程称为一个任务。</p>
+<p>在 BTD-OS 中我们将进程和线程统一用任务控制块 (TaskContralBlock) 结构表示，维护着操作系统对于任务的管理信息，结构如下：</p>
+<pre><code class="language-rust">// branch-main: kernel/src/task/task.rs
+pub struct TaskControlBlock {
+    // immutable
+    pub pid: PidHandle,
+    pub tgid: usize,
+    pub kernel_stack: KernelStack,
+
+    // mutable according to clone flags
+    pub sigactions: Arc&lt;RwLock&lt;[SigAction; MAX_SIGNUM as usize]&gt;&gt;,
+    pub memory_set: Arc&lt;RwLock&lt;MemorySet&gt;&gt;,
+    pub fd_table: Arc&lt;RwLock&lt;FDTable&gt;&gt;,
+
+    // mutable
+    inner: RwLock&lt;TaskControlBlockInner&gt;,
+}
+</code></pre>
+<ul>
+<li>pid / tgid 由全局分配器 PID_ALLOCATOR 分配，并且分配的 ID 仅增长不回收，因为 BTD-OS 实现线程的过程中，默认认为 tgid 不小于 pid；</li>
+<li>若该任务控制块为进程，则 TaskControlBlock 的 pid 与 tgid 字段值相同；</li>
+<li>pid 与 tgid 的差值可以用于计算线程 TrapContext 虚拟地址；</li>
+<li>kernel_stack 字段仅用于创建时分配内核栈，故无需修改；</li>
+<li>sigactions, memory_set, fd_table 字段均需要根据 fork 时的 CloneFlags 参数结合 <a href="https://man7.org/linux/man-pages/index.html" target="_blank">man-page</a> 要求创建；</li>
+</ul>
+<pre><code class="language-rust">pub struct TaskControlBlockInner {
+    pub trap_cx_ppn: PhysPageNum,
+    pub task_cx: TaskContext,
+    pub task_status: TaskStatus,
+    pub trap_cause: Option&lt;Scause&gt;,
+
+    pub parent: Option&lt;Weak&lt;TaskControlBlock&gt;&gt;,
+    // child process and thread collection
+    pub children: Vec&lt;Arc&lt;TaskControlBlock&gt;&gt;,
+
+    pub pending_signals: SigSet,
+    pub sigmask: SigMask,
+
+    pub cwd: AbsolutePath,
+    pub exit_code: i32,
+
+    pub interval_timer: Option&lt;IntervalTimer&gt;,
+    pub utime: TimeVal,
+    pub stime: TimeVal,
+    pub last_enter_umode_time: TimeVal,
+    pub last_enter_smode_time: TimeVal,
+
+    pub robust_list: RobustList,
+    pub rlimit_nofile: RLimit,
+
+    pub clear_child_tid: usize, /* CLONE_CHILD_CLEARTID */
+}
+</code></pre>
+<ul>
+<li>trap_cause 用于记录 TCB 进入 trap_handler 的原因，BTD-OS 具体用于时钟中断更新时间片的问题（后文会介绍 BTD-OS 为何改进时钟中断处理）；</li>
+<li>parent 表示可能存在的父进程；</li>
+<li>children 用于收集 fork 时创建的子进程/子线程的 Arc (原子引用计数)；</li>
+<li>pending_signals 表示待处理的信号集；</li>
+<li>sigmask 表示被屏蔽的信号集；</li>
+<li>interval_timer 用于处理与定时器相关的系统调用；</li>
+<li>utime, stime, last_enter_umode_time, last_enter_smode_time 用于记录 TCB 分别在 U Mode 和 S Mode 下所耗费的时间，用于处理 getrusage 系统调用；</li>
+<li>robust_list 用于实现 get_robust_list，set_robust_list 系统调用</li>
+<li>rlimit_nofile 用于实现 rlimit 相关系统调用，但目前仅用于限制进程可打开的文件数</li>
+<li>clear_child_tid 用于实现 fork，set_tid_address 系统调用</li>
+</ul>
+<p>另外，我们在参考往届优秀作品实现时，有注意到有些队伍在 TCB 中保留了 user_stask 字段。该字段用于保存为线程分配用户栈时保留的 user_stack 虚拟地址。</p>
+<p>BTD-OS 的 TCB 中并没有保存，原因是按照 man-page 关于 <a href="https://man7.org/linux/man-pages/man2/clone.2.html" target="_blank">fork(clone)</a> 系统调用的规定对于共享内存的子进程或子线程，创建传入 stask 参数，该参数规定了子进程/线程的用户栈的位置，故实际上不需要我们额外创建 user_stack。</p>
+<p>对于非 forK(clone) 创建的进程（new/exec load_elf 方法中），BTD-OS 会分配并映射该进程的 user_stack。</p>
+<pre><code class="language-rust">// kernel/src/mm/memory_set.rs: fn load_elf
+memory_set.user_stack_areas = VmArea::new(
+    user_stack_bottom.into(),
+    user_stack_top.into(),
+    MapType::Framed,
+    VmAreaType::UserStack,
+    MapPermission::R | MapPermission::W | MapPermission::U,
+    None,
+    0,
+);
+</code></pre>
+    </div>
+</article>
+
+
+<div class="license markdown-body">
+    <blockquote>
+        <p>除特殊注明部分，本站内容采用 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+               target="_blank">CC BY-NC-SA 4.0</a> 进行许可。</p>
+    </blockquote>
+</div>
+
+
+
+            </div>
+            <aside class="col-12 col-md-3 float-left sidebar">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>页面</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/archives/">归档</a>
+            </li>
+            
+            <li>
+                <a href="/about/">关于</a>
+            </li>
+            
+            <li>
+                <a href="/search/">站内搜索</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-links">
+        <h3>链接</h3>
+        <ul>
+            
+            <li>
+                <a href="https://github.com/BiteTheDisk" target="_blank"><span>GitHub</span></a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-tags">
+        <h3>标签</h3>
+        <div>
+            
+            <span>
+                <a href="/tags/debug/">Debug</a>
+            </span>
+            
+            <span>
+                <a href="/tags/docs/">Docs</a>
+            </span>
+            
+            <span>
+                <a href="/tags/ffi/">FFI</a>
+            </span>
+            
+            <span>
+                <a href="/tags/makefile/">Makefile</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5/">全国赛第一阶段</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
+            </span>
+            
+        </div>
+    </div>
+    <div class="sidebar-item sidebar-toc">
+        <h3>目录</h3><nav id="TableOfContents"></nav></div>
+</aside>
+
+        </div>
+        <div class="btn">
+    <div class="btn-menu" id="btn-menu">
+        <i class="iconfont icon-grid-sharp"></i>
+    </div>
+    <div class="btn-toggle-mode">
+        <i class="iconfont icon-contrast-sharp"></i>
+    </div>
+    <div class="btn-scroll-top">
+        <i class="iconfont icon-chevron-up-circle-sharp"></i>
+    </div>
+</div>
+<aside class="sidebar-mobile" style="display: none;">
+  <div class="sidebar-wrapper">
+    
+    <div class="sidebar-item sidebar-pages">
+        <h3>页面</h3>
+        <ul>
+            
+            <li>
+                <a href="/">Home</a>
+            </li>
+            
+            <li>
+                <a href="/archives/">归档</a>
+            </li>
+            
+            <li>
+                <a href="/about/">关于</a>
+            </li>
+            
+            <li>
+                <a href="/search/">站内搜索</a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-links">
+        <h3>链接</h3>
+        <ul>
+            
+            <li>
+                <a href="https://github.com/BiteTheDisk" target="_blank"><span>GitHub</span></a>
+            </li>
+            
+        </ul>
+    </div>
+    
+    <div class="sidebar-item sidebar-tags">
+        <h3>标签</h3>
+        <div>
+            
+            <span>
+                <a href="/tags/debug/">Debug</a>
+            </span>
+            
+            <span>
+                <a href="/tags/docs/">Docs</a>
+            </span>
+            
+            <span>
+                <a href="/tags/ffi/">FFI</a>
+            </span>
+            
+            <span>
+                <a href="/tags/makefile/">Makefile</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5/">全国赛第一阶段</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
+            </span>
+            
+        </div>
+    </div>
+    
+    
+    
+    <div class="sidebar-item sidebar-toc">
+        <h3>目录</h3>
+        <nav id="TableOfContents"></nav>
+    </div>
+    
+    
+  </div>
+</aside>
+    </main>
+
+    <footer>
+    <div class="container-lg clearfix">
+        <div class="col-12 footer">
+            
+            <span>&copy; 2023-2023
+                <a href="https://bitethedisk.github.io/">BiteTheDisk</a>
+                 | <a href="https://github.com/BiteTheDisk/bitethedisk.github.io">Source code</a> 
+                | 基于 <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
+                   target="_blank">Fuji-v2</a> &amp; <a href="https://gohugo.io/"
+                                                    target="_blank">Hugo</a> 构建
+            </span>
+        </div>
+    </div>
+</footer>
+
+    
+<script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha512-N9IJRoc3LaP3NDoiGkcPa4gG94kapGpaA5Zq9/Dr04uf5TbLFU5q0o8AbRhLKUUlp8QFS2u7S+Yti0U7QtuZvQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js" integrity="sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/components/prism-core.min.js" integrity="sha512-LCKPTo0gtJ74zCNMbWw04ltmujpzSR4oW+fgN+Y1YclhM5ZrHCZQAJE4quEodcI/G122sRhSGU2BsSRUZ2Gu3w==" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.27.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-GP4x8UWxWyh4BMbyJGOGneiTbkrWEF5izsVJByzVLodP8CuJH/n936+yQDMJJrOPUHLgyPbLiGw2rXmdvGdXHA==" crossorigin="anonymous"></script>
+
+
+
+<script defer src="/assets/js/fuji.min.645f1123be695831f419ab54c1bcba327325895c740014006e57070d4f3e5d6b553e929c4b46f40ea707249e9c7f7c2a446d32a39ce7319f80a34525586a8e0f.js" integrity="sha512-ZF8RI75pWDH0GatUwby6MnMliVx0ABQAblcHDU8&#43;XWtVPpKcS0b0DqcHJJ6cf3wqRG0yo5znMZ&#43;Ao0UlWGqODw=="></script>
+
+
+
+</body>
+
+</html>

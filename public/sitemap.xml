@@ -3,31 +3,39 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://bitethedisk.github.io/</loc>
-<<<<<<< HEAD
-    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
-  </url><url>
-    <loc>https://bitethedisk.github.io/tags/ffi/</loc>
-    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
+    <lastmod>2023-08-19T00:37:29+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/</loc>
-    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
-=======
-    <lastmod>2023-08-17T17:28:13+08:00</lastmod>
+    <lastmod>2023-08-19T00:37:29+08:00</lastmod>
   </url><url>
-    <loc>https://bitethedisk.github.io/post/</loc>
+    <loc>https://bitethedisk.github.io/post/task_control_block/</loc>
+    <lastmod>2023-08-19T00:37:29+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/post/overall_architecture/</loc>
+    <lastmod>2023-08-19T00:33:07+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/post/overview/</loc>
+    <lastmod>2023-08-19T00:30:10+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/tags/docs/</loc>
+    <lastmod>2023-08-19T00:30:10+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/post/fs-optimization/</loc>
     <lastmod>2023-08-17T17:28:13+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/tags/%E4%BC%98%E5%8C%96/</loc>
     <lastmod>2023-08-17T17:28:13+08:00</lastmod>
   </url><url>
-    <loc>https://bitethedisk.github.io/post/fs-optimization/</loc>
-    <lastmod>2023-08-17T17:28:13+08:00</lastmod>
->>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
-  </url><url>
-    <loc>https://bitethedisk.github.io/post/rust-and-c/</loc>
-    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
+    <loc>https://bitethedisk.github.io/post/dynamic/</loc>
+    <lastmod>2023-08-01T23:11:47+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5/</loc>
+    <lastmod>2023-08-01T23:11:47+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/tags/ffi/</loc>
+    <lastmod>2023-08-01T21:31:27+08:00</lastmod>
+  </url><url>
+    <loc>https://bitethedisk.github.io/post/rust-and-c/</loc>
     <lastmod>2023-08-01T21:31:27+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/signal/</loc>
@@ -42,17 +50,10 @@
     <loc>https://bitethedisk.github.io/post/process-thread/</loc>
     <lastmod>2023-08-01T18:37:11+08:00</lastmod>
   </url><url>
-    <loc>https://bitethedisk.github.io/tags/%E7%BA%BF%E7%A8%8B/</loc>
-    <lastmod>2023-08-01T18:37:11+08:00</lastmod>
-  </url><url>
     <loc>https://bitethedisk.github.io/tags/%E8%BF%9B%E7%A8%8B/</loc>
     <lastmod>2023-08-01T18:37:11+08:00</lastmod>
   </url><url>
-<<<<<<< HEAD
-    <loc>https://bitethedisk.github.io/tags/thread/</loc>
-    <lastmod>2023-08-01T18:37:11+08:00</lastmod>
-  </url><url>
-    <loc>https://bitethedisk.github.io/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/</loc>
+    <loc>https://bitethedisk.github.io/tags/%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2023-08-01T18:37:11+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/opensbi-getchar/</loc>
@@ -61,12 +62,7 @@
     <loc>https://bitethedisk.github.io/post/rust-heap-and-c/</loc>
     <lastmod>2023-07-07T22:35:05+08:00</lastmod>
   </url><url>
-=======
->>>>>>> e2bdb38 (Tidy tags; Add new post/fs-optimization.md)
     <loc>https://bitethedisk.github.io/post/project-structure/</loc>
-    <lastmod>2023-06-30T19:29:29+08:00</lastmod>
-  </url><url>
-    <loc>https://bitethedisk.github.io/tags/rustworkspace/</loc>
     <lastmod>2023-06-30T19:29:29+08:00</lastmod>
   </url><url>
     <loc>https://bitethedisk.github.io/post/about-makefile/</loc>

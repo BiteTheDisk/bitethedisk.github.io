@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docs on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/docs/</link>
+    <description>Recent content in Docs on BiteTheDisk 小站</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-hans</language>
+    <lastBuildDate>Sat, 19 Aug 2023 00:30:10 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/docs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[Docs] 概述</title>
+      <link>https://bitethedisk.github.io/post/overview/</link>
+      <pubDate>Sat, 19 Aug 2023 00:30:10 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/overview/</guid>
+      <description>&lt;p&gt;BTD-OS是一款基于 Rust 语言开发的宏内核操作系统，适用于 RISC-V64 平台。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
