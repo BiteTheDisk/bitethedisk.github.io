@@ -1,10 +1,9 @@
 ---
 title: "[Docs] 文件系统优化历程"
 date: 2023-08-17T17:28:13+08:00
-tags: ["优化", "Docs"]
+tags: ["优化", "Docs", "page cahce", "fat32"]
 draft: false
 ---
-# 文件系统优化历程
 
 我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 `BlockDevice` 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。
 
@@ -56,7 +55,7 @@ fn kernel_read_with_offset(&self, offset: usize, len: usize) -> Vec<u8> {
 
 
 
-#### 第一阶段改进 —— Static BusyBox
+## 第一阶段改进 —— Static BusyBox
 
 在全国赛第一阶段时，我们在测试过程中发现内核跑测例的执行速度非常缓慢，比如启动 busybox 都需要花半分钟、iozone 测试中，读写速度大概为几十到几百 KB/s，显然内核的文件读写性能非常糟糕，导致没法跑完我们已经实现的测试。
 
@@ -105,7 +104,7 @@ impl Busybox {
 
 
 
-#### 第一阶段优化 —— 分析 FAT32，改造簇链
+## 第一阶段优化 —— 分析 FAT32，改造簇链
 
 在第一阶段结束后，我们通过追踪读写相关代码所耗费的时间, 比如：
 
@@ -211,7 +210,7 @@ loop {
 
 
 
-#### 第三阶段解决 —— 更进一步，Page Cache
+## 第三阶段解决 —— 更进一步，Page Cache
 
 其实经过以上优化，内核运行测试时的速度已经能够接受了。但是问题的关键还是在于上面提到的：由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode 层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，这导致每次写入数据都会同步到磁盘。
 
@@ -330,4 +329,4 @@ for idx in start_buffer_idx..end_buffer_idx {
 
 ![fs-io-page-cache](/imgs/fs-io-page-cache.png)
 
-至此，我们的内核文件优化过程暂时告一段落。
+此，我们的内核文件优化过程暂时告一段落。

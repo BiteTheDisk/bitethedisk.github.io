@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>优化 on BiteTheDisk 小站</title>
-    <link>https://bitethedisk.github.io/tags/%E4%BC%98%E5%8C%96/</link>
-    <description>Recent content in 优化 on BiteTheDisk 小站</description>
+    <title>fat32 on BiteTheDisk 小站</title>
+    <link>https://bitethedisk.github.io/tags/fat32/</link>
+    <description>Recent content in fat32 on BiteTheDisk 小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Thu, 17 Aug 2023 17:28:13 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 17 Aug 2023 17:28:13 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/tags/fat32/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>[Docs] 文件系统优化历程</title>
       <link>https://bitethedisk.github.io/post/fs-optimization/</link>

@@ -31,14 +31,14 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
-<meta name="keywords" content="优化, Docs" />
+<meta name="keywords" content="优化, Docs, page cahce, fat32" />
 
 
 <meta property="og:title" content="[Docs] 文件系统优化历程" />
 <meta name="twitter:title" content="[Docs] 文件系统优化历程" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bitethedisk.github.io/post/fs-optimization/" /><meta property="og:description" content="文件系统优化历程 我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了" />
-<meta name="twitter:description" content="文件系统优化历程 我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/fs-optimization/" /><meta property="og:description" content="我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理" />
+<meta name="twitter:description" content="我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-17T17:28:13+08:00" /><meta property="article:modified_time" content="2023-08-17T17:28:13+08:00" />
 
@@ -111,15 +111,14 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-17</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2370 字</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2361 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E4%BC%98%E5%8C%96">优化</a>&nbsp;<a href="/tags/docs">Docs</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E4%BC%98%E5%8C%96">优化</a>&nbsp;<a href="/tags/docs">Docs</a>&nbsp;<a href="/tags/page-cahce">page cahce</a>&nbsp;<a href="/tags/fat32">fat32</a>&nbsp;</span>
 
     </div>
     
     <div class="post-content markdown-body">
-        <h1 id="文件系统优化历程">文件系统优化历程</h1>
-<p>我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 <code>BlockDevice</code> 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。</p>
+        <p>我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 <code>BlockDevice</code> 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。</p>
 <p>虽然我们在内核中给出了虚拟文件的抽象 File Trait，但是由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode 层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，每次读写都直接调用，VirtFile 提供的 read_at/write_at 方法，这导致每次写入数据都会同步到磁盘，此时 BlockCache 缓存块的作用微乎其微。</p>
 <pre><code class="language-rust">// branch: submit kernel/src/fs/fat32/file.rs
 pub struct Fat32File {
@@ -161,7 +160,7 @@ fn kernel_read_with_offset(&amp;self, offset: usize, len: usize) -&gt; Vec&lt;u8
 	...
 }
 </code></pre>
-<h4 id="第一阶段改进--static-busybox">第一阶段改进 —— Static BusyBox</h4>
+<h2 id="第一阶段改进--static-busybox">第一阶段改进 —— Static BusyBox</h2>
 <p>在全国赛第一阶段时，我们在测试过程中发现内核跑测例的执行速度非常缓慢，比如启动 busybox 都需要花半分钟、iozone 测试中，读写速度大概为几十到几百 KB/s，显然内核的文件读写性能非常糟糕，导致没法跑完我们已经实现的测试。</p>
 <p>此时为了尽可能跑完测试，我们发现由于大部分测试需要使用 busybox，为了避免多次解析 elf、从零创建地址空间等问题，我们采用了类似于加载 initproc 的方法。具体而言，我们将 busybox 预加载到内核中，并保存 load_elf 获取的信息。每次执行busybox时，我们直接使用保存的 load_elf 信息，并通过写时拷贝来创建所需的 busybox 进程的地址空间，更快速地创建 busybox。</p>
 <pre><code class="language-rust">// branch submit: kernel/src/task/initproc.rs
@@ -202,7 +201,7 @@ impl Busybox {
 }
 </code></pre>
 <p>虽然对于当时的我们来说算是雪中送炭。但这实际上并非合理的设计。</p>
-<h4 id="第一阶段优化--分析-fat32改造簇链">第一阶段优化 —— 分析 FAT32，改造簇链</h4>
+<h2 id="第一阶段优化--分析-fat32改造簇链">第一阶段优化 —— 分析 FAT32，改造簇链</h2>
 <p>在第一阶段结束后，我们通过追踪读写相关代码所耗费的时间, 比如：</p>
 <pre><code class="language-rust">// branch-main: crates/fat32/src/vf.rs
 pub fn write_at(&amp;self, offset: usize, buf: &amp;[u8]) -&gt; usize {
@@ -289,7 +288,7 @@ loop {
 }
 </code></pre>
 <p>对比视频：IMAGE</p>
-<h4 id="第三阶段解决--更进一步page-cache">第三阶段解决 —— 更进一步，Page Cache</h4>
+<h2 id="第三阶段解决--更进一步page-cache">第三阶段解决 —— 更进一步，Page Cache</h2>
 <p>其实经过以上优化，内核运行测试时的速度已经能够接受了。但是问题的关键还是在于上面提到的：由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode 层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，这导致每次写入数据都会同步到磁盘。</p>
 <p>文件读写时，大量的磁盘直接 IO，才是急需解决的问题。</p>
 <p>我们首先想到了可以通过实现 TempFS (将文件存储在系统的内存中而不是磁盘上)，将测试过程中内核关于文件的操作如创建，读写等，都交给 TempFS，不必每次都写回 FAT32。或者是在目前的 KFile 基础上加上 PageCache 减少对磁盘的频繁访问。</p>
@@ -389,7 +388,7 @@ for idx in start_buffer_idx..end_buffer_idx {
 </p>
 <p><img class="img-zoomable" src="/imgs/fs-io-page-cache.png" alt="fs-io-page-cache" />
 </p>
-<p>至此，我们的内核文件优化过程暂时告一段落。</p>
+<p>此，我们的内核文件优化过程暂时告一段落。</p>
 
     </div>
 </article>
@@ -454,11 +453,19 @@ for idx in start_buffer_idx..end_buffer_idx {
             </span>
             
             <span>
+                <a href="/tags/fat32/">fat32</a>
+            </span>
+            
+            <span>
                 <a href="/tags/ffi/">FFI</a>
             </span>
             
             <span>
                 <a href="/tags/makefile/">Makefile</a>
+            </span>
+            
+            <span>
+                <a href="/tags/page-cahce/">page cahce</a>
             </span>
             
             <span>
@@ -490,7 +497,9 @@ for idx in start_buffer_idx..end_buffer_idx {
     <div class="sidebar-item sidebar-toc">
         <h3>目录</h3><nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#第一阶段改进--static-busybox">第一阶段改进 —— Static BusyBox</a></li>
+    <li><a href="#第一阶段优化--分析-fat32改造簇链">第一阶段优化 —— 分析 FAT32，改造簇链</a></li>
+    <li><a href="#第三阶段解决--更进一步page-cache">第三阶段解决 —— 更进一步，Page Cache</a>
       <ul>
         <li></li>
       </ul>
@@ -561,11 +570,19 @@ for idx in start_buffer_idx..end_buffer_idx {
             </span>
             
             <span>
+                <a href="/tags/fat32/">fat32</a>
+            </span>
+            
+            <span>
                 <a href="/tags/ffi/">FFI</a>
             </span>
             
             <span>
                 <a href="/tags/makefile/">Makefile</a>
+            </span>
+            
+            <span>
+                <a href="/tags/page-cahce/">page cahce</a>
             </span>
             
             <span>
@@ -601,7 +618,9 @@ for idx in start_buffer_idx..end_buffer_idx {
         <h3>目录</h3>
         <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#第一阶段改进--static-busybox">第一阶段改进 —— Static BusyBox</a></li>
+    <li><a href="#第一阶段优化--分析-fat32改造簇链">第一阶段优化 —— 分析 FAT32，改造簇链</a></li>
+    <li><a href="#第三阶段解决--更进一步page-cache">第三阶段解决 —— 更进一步，Page Cache</a>
       <ul>
         <li></li>
       </ul>
