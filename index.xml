@@ -6,7 +6,25 @@
     <description>Recent content on BiteTheDisk 小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Thu, 17 Aug 2023 17:28:13 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 19 Aug 2023 00:33:07 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>系统设计与整体架构</title>
+      <link>https://bitethedisk.github.io/post/overall_architecture/</link>
+      <pubDate>Sat, 19 Aug 2023 00:33:07 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/overall_architecture/</guid>
+      <description>&lt;p&gt;RISC-V架构定义了4种特权级别，其中只有M模式是必须实现的，其余特权级别可以根据运行在CPU上的应用需求进行调整。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>[Docs] 概述</title>
+      <link>https://bitethedisk.github.io/post/overview/</link>
+      <pubDate>Sat, 19 Aug 2023 00:30:10 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/overview/</guid>
+      <description>&lt;p&gt;BTD-OS是一款基于 Rust 语言开发的宏内核操作系统，适用于 RISC-V64 平台。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>文件系统优化历程</title>
       <link>https://bitethedisk.github.io/post/fs-optimization/</link>

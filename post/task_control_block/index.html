@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#ffffff" />
 
 
-<title>适配 OpenSBI - BiteTheDisk 小站</title>
+<title>任务控制块 - BiteTheDisk 小站</title>
 
 
 <meta name="author" content="BiteTheDisk" />
@@ -31,16 +31,14 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
-<meta name="keywords" content="全国赛第一阶段" />
 
-
-<meta property="og:title" content="适配 OpenSBI" />
-<meta name="twitter:title" content="适配 OpenSBI" />
+<meta property="og:title" content="任务控制块" />
+<meta name="twitter:title" content="任务控制块" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bitethedisk.github.io/post/opensbi-getchar/" /><meta property="og:description" content="一开始" />
-<meta name="twitter:description" content="一开始" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/task_control_block/" /><meta property="og:description" content="应用程序的一次执行过程称为一个任务。" />
+<meta name="twitter:description" content="应用程序的一次执行过程称为一个任务。" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-07-12T17:17:35+08:00" /><meta property="article:modified_time" content="2023-07-12T17:17:35+08:00" />
+<meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-19T00:37:29+08:00" /><meta property="article:modified_time" content="2023-08-19T00:37:29+08:00" />
 
 
 <style>
@@ -106,20 +104,97 @@
 <article>
     
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/opensbi-getchar/">适配 OpenSBI</a>
+        <a href="https://bitethedisk.github.io/post/task_control_block/">任务控制块</a>
     </h2>
     <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-07-12</span>
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-19</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;3 字</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;803 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;无标签</span>
 
     </div>
     
     <div class="post-content markdown-body">
-        <p>一开始</p>
+        <p>应用程序的一次执行过程称为一个任务。</p>
+<p>在 BTD-OS 中我们将进程和线程统一用任务控制块 (TaskContralBlock) 结构表示，维护着操作系统对于任务的管理信息，结构如下：</p>
+<pre><code class="language-rust">// branch-main: kernel/src/task/task.rs
+pub struct TaskControlBlock {
+    // immutable
+    pub pid: PidHandle,
+    pub tgid: usize,
+    pub kernel_stack: KernelStack,
 
+    // mutable according to clone flags
+    pub sigactions: Arc&lt;RwLock&lt;[SigAction; MAX_SIGNUM as usize]&gt;&gt;,
+    pub memory_set: Arc&lt;RwLock&lt;MemorySet&gt;&gt;,
+    pub fd_table: Arc&lt;RwLock&lt;FDTable&gt;&gt;,
+
+    // mutable
+    inner: RwLock&lt;TaskControlBlockInner&gt;,
+}
+</code></pre>
+<ul>
+<li>pid / tgid 由全局分配器 PID_ALLOCATOR 分配，并且分配的 ID 仅增长不回收，因为 BTD-OS 实现线程的过程中，默认认为 tgid 不小于 pid；</li>
+<li>若该任务控制块为进程，则 TaskControlBlock 的 pid 与 tgid 字段值相同；</li>
+<li>pid 与 tgid 的差值可以用于计算线程 TrapContext 虚拟地址；</li>
+<li>kernel_stack 字段仅用于创建时分配内核栈，故无需修改；</li>
+<li>sigactions, memory_set, fd_table 字段均需要根据 fork 时的 CloneFlags 参数结合 <a href="https://man7.org/linux/man-pages/index.html" target="_blank">man-page</a> 要求创建；</li>
+</ul>
+<pre><code class="language-rust">pub struct TaskControlBlockInner {
+    pub trap_cx_ppn: PhysPageNum,
+    pub task_cx: TaskContext,
+    pub task_status: TaskStatus,
+    pub trap_cause: Option&lt;Scause&gt;,
+
+    pub parent: Option&lt;Weak&lt;TaskControlBlock&gt;&gt;,
+    // child process and thread collection
+    pub children: Vec&lt;Arc&lt;TaskControlBlock&gt;&gt;,
+
+    pub pending_signals: SigSet,
+    pub sigmask: SigMask,
+
+    pub cwd: AbsolutePath,
+    pub exit_code: i32,
+
+    pub interval_timer: Option&lt;IntervalTimer&gt;,
+    pub utime: TimeVal,
+    pub stime: TimeVal,
+    pub last_enter_umode_time: TimeVal,
+    pub last_enter_smode_time: TimeVal,
+
+    pub robust_list: RobustList,
+    pub rlimit_nofile: RLimit,
+
+    pub clear_child_tid: usize, /* CLONE_CHILD_CLEARTID */
+}
+</code></pre>
+<ul>
+<li>trap_cause 用于记录 TCB 进入 trap_handler 的原因，BTD-OS 具体用于时钟中断更新时间片的问题（后文会介绍 BTD-OS 为何改进时钟中断处理）；</li>
+<li>parent 表示可能存在的父进程；</li>
+<li>children 用于收集 fork 时创建的子进程/子线程的 Arc (原子引用计数)；</li>
+<li>pending_signals 表示待处理的信号集；</li>
+<li>sigmask 表示被屏蔽的信号集；</li>
+<li>interval_timer 用于处理与定时器相关的系统调用；</li>
+<li>utime, stime, last_enter_umode_time, last_enter_smode_time 用于记录 TCB 分别在 U Mode 和 S Mode 下所耗费的时间，用于处理 getrusage 系统调用；</li>
+<li>robust_list 用于实现 get_robust_list，set_robust_list 系统调用</li>
+<li>rlimit_nofile 用于实现 rlimit 相关系统调用，但目前仅用于限制进程可打开的文件数</li>
+<li>clear_child_tid 用于实现 fork，set_tid_address 系统调用</li>
+</ul>
+<p>另外，我们在参考往届优秀作品实现时，有注意到有些队伍在 TCB 中保留了 user_stask 字段。该字段用于保存为线程分配用户栈时保留的 user_stack 虚拟地址。</p>
+<p>BTD-OS 的 TCB 中并没有保存，原因是按照 man-page 关于 <a href="https://man7.org/linux/man-pages/man2/clone.2.html" target="_blank">fork(clone)</a> 系统调用的规定对于共享内存的子进程或子线程，创建传入 stask 参数，该参数规定了子进程/线程的用户栈的位置，故实际上不需要我们额外创建 user_stack。</p>
+<p>对于非 forK(clone) 创建的进程（new/exec load_elf 方法中），BTD-OS 会分配并映射该进程的 user_stack。</p>
+<pre><code class="language-rust">// kernel/src/mm/memory_set.rs: fn load_elf
+memory_set.user_stack_areas = VmArea::new(
+    user_stack_bottom.into(),
+    user_stack_top.into(),
+    MapType::Framed,
+    VmAreaType::UserStack,
+    MapPermission::R | MapPermission::W | MapPermission::U,
+    None,
+    0,
+);
+</code></pre>
     </div>
 </article>
 
