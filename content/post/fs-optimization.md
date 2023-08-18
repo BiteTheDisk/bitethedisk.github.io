@@ -5,6 +5,10 @@ tags: ["优化", "Docs", "page cahce", "fat32"]
 draft: false
 ---
 
+三阶段优化
+
+<!--more-->
+
 我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 `BlockDevice` 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。
 
 虽然我们在内核中给出了虚拟文件的抽象 File Trait，但是由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode 层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，每次读写都直接调用，VirtFile 提供的 read_at/write_at 方法，这导致每次写入数据都会同步到磁盘，此时 BlockCache 缓存块的作用微乎其微。
