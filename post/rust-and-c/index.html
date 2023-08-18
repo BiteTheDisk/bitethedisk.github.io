@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hans">
 
 <head>
     
@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
-<meta name="generator" content="Hugo 0.111.3">
+<meta name="generator" content="Hugo 0.117.0">
 
 
 
@@ -37,8 +37,18 @@
 <meta property="og:title" content="Rust 和 C 的交互" />
 <meta name="twitter:title" content="Rust 和 C 的交互" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bitethedisk.github.io/post/rust-and-c/" /><meta property="og:description" content="" />
-<meta name="twitter:description" content="" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/rust-and-c/" /><meta property="og:description" content="在 Rust 中，字符串是一个胖指针，包括具有所有权的 String 以及 &amp;&#39;a str，并且为 utf-8 编码
+而在 C 中，字符串只是一个单纯的指针，以有符号的 i8 为单元，以 \0
+作为结尾，长度不包括结尾 &lsquo;\0&rsquo;
+在使用 Rust 编写 initrpoc 和
+系统调用的时候，由于测例所要求的的接口所使用的的字符串相关参数均为 C
+标准，所以我们需要将 Rust 和 C 之间的字符串进行转换" />
+<meta name="twitter:description" content="在 Rust 中，字符串是一个胖指针，包括具有所有权的 String 以及 &amp;&#39;a str，并且为 utf-8 编码
+而在 C 中，字符串只是一个单纯的指针，以有符号的 i8 为单元，以 \0
+作为结尾，长度不包括结尾 &lsquo;\0&rsquo;
+在使用 Rust 编写 initrpoc 和
+系统调用的时候，由于测例所要求的的接口所使用的的字符串相关参数均为 C
+标准，所以我们需要将 Rust 和 C 之间的字符串进行转换" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-01T21:31:27+08:00" /><meta property="article:modified_time" content="2023-08-01T21:31:27+08:00" />
 
@@ -111,22 +121,90 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;0 words</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;711 字</span>
 
 <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;<a href="/tags/ffi">FFI</a>&nbsp;</span>
 
     </div>
     
     <div class="post-content markdown-body">
-        
+        <p>在 Rust 中，字符串是一个胖指针，包括具有所有权的 <code>String</code> 以及 <code>&amp;'a str</code>，并且为 utf-8 编码</p>
+<p>而在 C 中，字符串只是一个单纯的指针，以有符号的 <code>i8</code> 为单元，以 <code>\0</code>
+作为结尾，长度不包括结尾 &lsquo;\0&rsquo;</p>
+<p>在使用 Rust 编写 initrpoc 和
+系统调用的时候，由于测例所要求的的接口所使用的的字符串相关参数均为 C
+标准，所以我们需要将 Rust 和 C 之间的字符串进行转换</p>
+<h2 id="cstring">CString</h2>
+<p>Rust 中提供了
+<a href="https://doc.rust-lang.org/alloc/ffi/struct.CString.html" target="_blank"><code>alloc::ffi:CString</code></a>
+来处理两者之间的转换</p>
+<h3 id="创建-cstring">创建 CString</h3>
+<p>一般可以通过
+<a href="https://doc.rust-lang.org/alloc/ffi/struct.CString.html#method.new" target="_blank"><code>CString::new</code></a>
+来创建一个 <code>CString</code></p>
+<pre><code class="language-rust">pub fn new&lt;T: Into&lt;Vec&lt;u8&gt;&gt;&gt;(t: T) -&gt; Result&lt;CString, NulError&gt;
+</code></pre>
+<p>具体如下:</p>
+<pre><code class="language-rust">#[macro_use]
+extern crate alloc;
+
+use alloc::ffi::CString;
+
+fn main() {
+    let c_string = CString::new(&quot;Hello, world!&quot;).unwrap();
+    // ...
+}
+</code></pre>
+<p>这里的 <code>new</code> 方法会检查传入的值是否是以 <code>\0</code>
+结尾的，<strong>该方法本身会将传入的值自动加上
+<code>\0</code>，所以要求传入的参数所表示的字符串不能以 <code>\0</code> 结尾</strong></p>
+<p>也可以通过 unsafe 方法
+<a href="https://doc.rust-lang.org/alloc/ffi/struct.CString.html#method.from_vec_unchecked" target="_blank"><code>CString::from_vec_unchecked</code></a>
+等忽略这种检查</p>
+<h3 id="cstring-转换需注意">CString 转换需注意</h3>
+<p>Rust 是一门强调安全的语言，所有的值都需要在超出各自的声明周期后释放其所占有的内存</p>
+<p>文档中提供了一个 <code>pub fn into_raw(self) -&gt; *mut c_char</code>
+方法，该方法的实际意义和它的签名并不相同: <strong>其返回的字符串必须不可变！</strong></p>
+<p>因为从 Rust 向 C 传递的字符串本质上还是当前 Rust
+程序分配的内存(在堆上，本质还是一个 <code>Vec&lt;u8&gt;</code>，对，是 <code>u8</code>，而不是
+<code>i8</code>，估计是为了防止由于溢出而导致的编译失败，rustc dddd)，如果在 C
+程序中改变了当前字符串的值，比如删去结尾 <code>\0</code>，或者将 <code>\0</code> 提前，都会带来内存安全隐患</p>
+<p>所以，这里的 <code>*mut c_char</code> 实际对应 C 中的 <code>char *</code></p>
+<h3 id="及时回收-cstring-防止内存泄露">及时回收 CString 防止内存泄露</h3>
+<p>前面提到，<code>CString</code> 底层其实是 <code>Vec&lt;u8&gt;</code>，其实际上是分配在 Rust 的堆上的</p>
+<p>在将 <code>CString</code> leek 成传给 C 的指针后，<code>CString</code> 底层的 <code>Vec&lt;u8&gt;</code> 就脱离了 Rust
+所有权机制的监管，如果不<strong>重构裸指针的所有权</strong>，那将会导致内存泄露</p>
+<p>要想回收 <code>CString</code> 所使用的内存，可以按以下操作</p>
+<pre><code class="language-rust">#[macro_use]
+extern crate alloc;
+
+use alloc::ffi::CString;
+
+fn main() {
+    let initproc = CString::new(&quot;/busybox&quot;).unwrap();
+    let initproc_raw = initproc.into_raw();
+
+    // ...
+
+    // Execute syscall, which uses C ABI.
+    execve(iniproc, /* argv, envs */);
+
+    // Release memory of `initproc_raw`.
+    {
+        unsafe {
+            CString::from_raw(initproc_raw);
+        }
+    }
+}
+</code></pre>
     </div>
 </article>
 
 
 <div class="license markdown-body">
     <blockquote>
-        <p>Unless otherwise noted, the content of this site is licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
-               target="_blank">CC BY-NC-SA 4.0</a>.</p>
+        <p>除特殊注明部分，本站内容采用 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"
+               target="_blank">CC BY-NC-SA 4.0</a> 进行许可。</p>
     </blockquote>
 </div>
 
@@ -136,7 +214,7 @@
             <aside class="col-12 col-md-3 float-left sidebar">
     
     <div class="sidebar-item sidebar-pages">
-        <h3>Pages</h3>
+        <h3>页面</h3>
         <ul>
             
             <li>
@@ -159,7 +237,7 @@
     </div>
     
     <div class="sidebar-item sidebar-links">
-        <h3>Links</h3>
+        <h3>链接</h3>
         <ul>
             
             <li>
@@ -170,12 +248,8 @@
     </div>
     
     <div class="sidebar-item sidebar-tags">
-        <h3>Tags</h3>
+        <h3>标签</h3>
         <div>
-            
-            <span>
-                <a href="/tags/busybox/">busybox</a>
-            </span>
             
             <span>
                 <a href="/tags/debug/">Debug</a>
@@ -190,27 +264,7 @@
             </span>
             
             <span>
-                <a href="/tags/oskernel/">OSKernel</a>
-            </span>
-            
-            <span>
-                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
-            </span>
-            
-            <span>
-                <a href="/tags/process/">process</a>
-            </span>
-            
-            <span>
-                <a href="/tags/rustworkspace/">RustWorkspace</a>
-            </span>
-            
-            <span>
-                <a href="/tags/thread/">thread</a>
-            </span>
-            
-            <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
             </span>
             
             <span>
@@ -221,10 +275,32 @@
                 <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
             </span>
             
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
+            </span>
+            
         </div>
     </div>
     <div class="sidebar-item sidebar-toc">
-        <h3>Table of Contents</h3><nav id="TableOfContents"></nav></div>
+        <h3>目录</h3><nav id="TableOfContents">
+  <ul>
+    <li><a href="#cstring">CString</a>
+      <ul>
+        <li><a href="#创建-cstring">创建 CString</a></li>
+        <li><a href="#cstring-转换需注意">CString 转换需注意</a></li>
+        <li><a href="#及时回收-cstring-防止内存泄露">及时回收 CString 防止内存泄露</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
 </aside>
 
         </div>
@@ -243,7 +319,7 @@
   <div class="sidebar-wrapper">
     
     <div class="sidebar-item sidebar-pages">
-        <h3>Pages</h3>
+        <h3>页面</h3>
         <ul>
             
             <li>
@@ -266,7 +342,7 @@
     </div>
     
     <div class="sidebar-item sidebar-links">
-        <h3>Links</h3>
+        <h3>链接</h3>
         <ul>
             
             <li>
@@ -277,12 +353,8 @@
     </div>
     
     <div class="sidebar-item sidebar-tags">
-        <h3>Tags</h3>
+        <h3>标签</h3>
         <div>
-            
-            <span>
-                <a href="/tags/busybox/">busybox</a>
-            </span>
             
             <span>
                 <a href="/tags/debug/">Debug</a>
@@ -297,27 +369,7 @@
             </span>
             
             <span>
-                <a href="/tags/oskernel/">OSKernel</a>
-            </span>
-            
-            <span>
-                <a href="/tags/problems--solutions/">Problems-&amp;-Solutions</a>
-            </span>
-            
-            <span>
-                <a href="/tags/process/">process</a>
-            </span>
-            
-            <span>
-                <a href="/tags/rustworkspace/">RustWorkspace</a>
-            </span>
-            
-            <span>
-                <a href="/tags/thread/">thread</a>
-            </span>
-            
-            <span>
-                <a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9Bi/">全国赛I</a>
+                <a href="/tags/%E4%BC%98%E5%8C%96/">优化</a>
             </span>
             
             <span>
@@ -328,14 +380,36 @@
                 <a href="/tags/%E5%8C%BA%E5%9F%9F%E8%B5%9B/">区域赛</a>
             </span>
             
+            <span>
+                <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E8%BF%9B%E7%A8%8B/">进程</a>
+            </span>
+            
+            <span>
+                <a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3/">问题与解决</a>
+            </span>
+            
         </div>
     </div>
     
     
     
     <div class="sidebar-item sidebar-toc">
-        <h3>Table of Contents</h3>
-        <nav id="TableOfContents"></nav>
+        <h3>目录</h3>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#cstring">CString</a>
+      <ul>
+        <li><a href="#创建-cstring">创建 CString</a></li>
+        <li><a href="#cstring-转换需注意">CString 转换需注意</a></li>
+        <li><a href="#及时回收-cstring-防止内存泄露">及时回收 CString 防止内存泄露</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
     </div>
     
     
@@ -350,9 +424,9 @@
             <span>&copy; 2023-2023
                 <a href="https://bitethedisk.github.io/">BiteTheDisk</a>
                  | <a href="https://github.com/BiteTheDisk/bitethedisk.github.io">Source code</a> 
-                | Powered by <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
+                | 基于 <a href="https://github.com/dsrkafuu/hugo-theme-fuji/"
                    target="_blank">Fuji-v2</a> &amp; <a href="https://gohugo.io/"
-                                                    target="_blank">Hugo</a> 
+                                                    target="_blank">Hugo</a> 构建
             </span>
         </div>
     </div>

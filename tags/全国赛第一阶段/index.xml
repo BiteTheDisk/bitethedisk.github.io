@@ -18,6 +18,20 @@
     </item>
     
     <item>
+      <title>Rust 和 C 的交互</title>
+      <link>https://bitethedisk.github.io/post/rust-and-c/</link>
+      <pubDate>Tue, 01 Aug 2023 21:31:27 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/rust-and-c/</guid>
+      <description>&lt;p&gt;在 Rust 中，字符串是一个胖指针，包括具有所有权的 &lt;code&gt;String&lt;/code&gt; 以及 &lt;code&gt;&amp;amp;&#39;a str&lt;/code&gt;，并且为 utf-8 编码&lt;/p&gt;
+&lt;p&gt;而在 C 中，字符串只是一个单纯的指针，以有符号的 &lt;code&gt;i8&lt;/code&gt; 为单元，以 &lt;code&gt;\0&lt;/code&gt;
+作为结尾，长度不包括结尾 &amp;lsquo;\0&amp;rsquo;&lt;/p&gt;
+&lt;p&gt;在使用 Rust 编写 initrpoc 和
+系统调用的时候，由于测例所要求的的接口所使用的的字符串相关参数均为 C
+标准，所以我们需要将 Rust 和 C 之间的字符串进行转换&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>[全国赛I] 信号处理</title>
       <link>https://bitethedisk.github.io/post/signal/</link>
       <pubDate>Tue, 01 Aug 2023 21:17:37 +0800</pubDate>

@@ -147,6 +147,28 @@
 
 <div class="post">
     <h2 class="post-item post-title">
+        <a href="https://bitethedisk.github.io/post/rust-and-c/">Rust 和 C 的交互</a>
+    </h2>
+    <div class="post-item post-meta">
+        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-01</span>
+
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;711 字</span>
+
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E5%85%A8%E5%9B%BD%E8%B5%9B%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5">全国赛第一阶段</a>&nbsp;<a href="/tags/ffi">FFI</a>&nbsp;</span>
+
+    </div>
+    <div class="post-item post-summary markdown-body">
+        <p>在 Rust 中，字符串是一个胖指针，包括具有所有权的 <code>String</code> 以及 <code>&amp;'a str</code>，并且为 utf-8 编码</p>
+<p>而在 C 中，字符串只是一个单纯的指针，以有符号的 <code>i8</code> 为单元，以 <code>\0</code>
+作为结尾，长度不包括结尾 &lsquo;\0&rsquo;</p>
+<p>在使用 Rust 编写 initrpoc 和
+系统调用的时候，由于测例所要求的的接口所使用的的字符串相关参数均为 C
+标准，所以我们需要将 Rust 和 C 之间的字符串进行转换</p>
+    </div>
+</div>
+
+<div class="post">
+    <h2 class="post-item post-title">
         <a href="https://bitethedisk.github.io/post/signal/">[全国赛I] 信号处理</a>
     </h2>
     <div class="post-item post-meta">
@@ -271,24 +293,15 @@ manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结�
 开始调试</p>
     </div>
 </div>
-
-<div class="post">
-    <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/random-stuck/">[已解决] 内核在执行用户程序时随机卡死</a>
-    </h2>
-    <div class="post-item post-meta">
-        <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-06-29</span>
-
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1107 字</span>
-
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E9%97%AE%E9%A2%98%E4%B8%8E%E8%A7%A3%E5%86%B3">问题与解决</a>&nbsp;</span>
-
-    </div>
-    <div class="post-item post-summary markdown-body">
-        <p>内核在运行的时候总是会不知何时卡死，底层原因是持续触发时钟中断</p>
-    </div>
-</div>
-
+<div class="pagination"><div class="pag-item pag-current">
+    <a href="/post/">1</a>
+  </div><div class="pag-item">
+    <a href="/post/page/2/">2</a>
+  </div><div class="pag-next">
+    <a href="/post/page/2/"><i class="iconfont icon-chevron-forward-circle-sharp"></i></a>
+  </div><div class="pag-last">
+    <a href="/post/page/2/"><i class="iconfont icon-caret-forward-circle-sharp"></i></a>
+  </div></div>
             </div>
             <aside class="col-12 col-md-3 float-left sidebar">
     
@@ -332,6 +345,10 @@ manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结�
             
             <span>
                 <a href="/tags/debug/">Debug</a>
+            </span>
+            
+            <span>
+                <a href="/tags/ffi/">FFI</a>
             </span>
             
             <span>
@@ -424,6 +441,10 @@ manual page 中的要求，完善了内核的 fork 以及 TaskControlBlock 结�
             
             <span>
                 <a href="/tags/debug/">Debug</a>
+            </span>
+            
+            <span>
+                <a href="/tags/ffi/">FFI</a>
             </span>
             
             <span>
