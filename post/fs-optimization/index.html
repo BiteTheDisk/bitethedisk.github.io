@@ -37,8 +37,8 @@
 <meta property="og:title" content="[Docs] 文件系统优化历程" />
 <meta name="twitter:title" content="[Docs] 文件系统优化历程" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://bitethedisk.github.io/post/fs-optimization/" /><meta property="og:description" content="我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理" />
-<meta name="twitter:description" content="我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
+<meta property="og:url" content="https://bitethedisk.github.io/post/fs-optimization/" /><meta property="og:description" content="三阶段优化" />
+<meta name="twitter:description" content="三阶段优化" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:image" content="https://bitethedisk.github.io/img/og.png" /><meta property="article:published_time" content="2023-08-17T17:28:13+08:00" /><meta property="article:modified_time" content="2023-08-17T17:28:13+08:00" />
 
@@ -111,14 +111,15 @@
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-17</span>
 
-<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2361 字</span>
+<span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;2366 字</span>
 
 <span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/%E4%BC%98%E5%8C%96">优化</a>&nbsp;<a href="/tags/docs">Docs</a>&nbsp;<a href="/tags/page-cahce">page cahce</a>&nbsp;<a href="/tags/fat32">fat32</a>&nbsp;</span>
 
     </div>
     
     <div class="post-content markdown-body">
-        <p>我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 <code>BlockDevice</code> 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。</p>
+        <p>三阶段优化</p>
+<p>我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 <code>BlockDevice</code> 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了直接调用内存管理的内核函数。同时在设计中避免了直接访问进程相关的数据和函数，从而隔离了操作系统内核的进程管理。</p>
 <p>虽然我们在内核中给出了虚拟文件的抽象 File Trait，但是由于只完成的 FAT32 文件系统，内核中不存在虚拟文件系统这一抽象，也没有 Inode 层面的缓存，内核中的文件实际上将 FAT32 提供的 VirtFile 进一步封装成 KFile，每次读写都直接调用，VirtFile 提供的 read_at/write_at 方法，这导致每次写入数据都会同步到磁盘，此时 BlockCache 缓存块的作用微乎其微。</p>
 <pre><code class="language-rust">// branch: submit kernel/src/fs/fat32/file.rs
 pub struct Fat32File {
@@ -389,7 +390,6 @@ for idx in start_buffer_idx..end_buffer_idx {
 <p><img class="img-zoomable" src="/imgs/fs-io-page-cache.png" alt="fs-io-page-cache" />
 </p>
 <p>此，我们的内核文件优化过程暂时告一段落。</p>
-
     </div>
 </article>
 
