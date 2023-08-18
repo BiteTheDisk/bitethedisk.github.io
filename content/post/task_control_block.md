@@ -1,7 +1,8 @@
 ---
-title: "任务控制块"
+title: "[Docs] 任务控制块"
+tags: ["Docs"]
 date: 2023-08-19T00:37:29+08:00
-draft: true
+draft: false
 ---
 
 应用程序的一次执行过程称为一个任务。

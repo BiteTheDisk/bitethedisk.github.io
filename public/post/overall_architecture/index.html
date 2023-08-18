@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#ffffff" />
 
 
-<title>系统设计与整体架构 - BiteTheDisk 小站</title>
+<title>[Docs] 系统设计与整体架构 - BiteTheDisk 小站</title>
 
 
 <meta name="author" content="BiteTheDisk" />
@@ -31,9 +31,11 @@
 <meta name="description" content="A minimal Hugo theme with nice theme color." />
 
 
+<meta name="keywords" content="Docs" />
 
-<meta property="og:title" content="系统设计与整体架构" />
-<meta name="twitter:title" content="系统设计与整体架构" />
+
+<meta property="og:title" content="[Docs] 系统设计与整体架构" />
+<meta name="twitter:title" content="[Docs] 系统设计与整体架构" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://bitethedisk.github.io/post/overall_architecture/" /><meta property="og:description" content="RISC-V架构定义了4种特权级别，其中只有M模式是必须实现的，其余特权级别可以根据运行在CPU上的应用需求进行调整。" />
 <meta name="twitter:description" content="RISC-V架构定义了4种特权级别，其中只有M模式是必须实现的，其余特权级别可以根据运行在CPU上的应用需求进行调整。" /><meta property="og:image" content="https://bitethedisk.github.io/img/og.png" />
@@ -104,14 +106,14 @@
 <article>
     
     <h2 class="post-item post-title">
-        <a href="https://bitethedisk.github.io/post/overall_architecture/">系统设计与整体架构</a>
+        <a href="https://bitethedisk.github.io/post/overall_architecture/">[Docs] 系统设计与整体架构</a>
     </h2>
     <div class="post-item post-meta">
         <span><i class="iconfont icon-today-sharp"></i>&nbsp;2023-08-19</span>
 
 <span><i class="iconfont icon-file-tray-sharp"></i>&nbsp;1085 字</span>
 
-<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;无标签</span>
+<span><i class="iconfont icon-pricetags-sharp"></i>&nbsp;<a href="/tags/docs">Docs</a>&nbsp;</span>
 
     </div>
     
@@ -125,9 +127,9 @@
 </ul>
 <p>在 RISC-V 中，各模式使用 ecall 指令与对应模式下的 ret 指令进行特权级切换，对于用户模式（即用户态）切
 换到监督模式（即内核态），主要是使用内核提供的提供了 ABI（Application Binary Interface）接口，即 BTD OS 实现的系统调用。对于监督模式切换到机器模式，我们选择使用 <a href="https://github.com/riscv-software-src/opensbi" target="_blank">OpenSBI</a>，它是运行在更底层的 M 模式特权级下的软件，实现了对硬件的控制，如串口输入输出、多核心启动、操作系统的关机等操作，是操作系统内核的执行环境。</p>
-<p>!<img class="img-zoomable" src="./pic/Overall-System-Architecture.png" alt="Overall-System-Architecture" />
+<p>!<img class="img-zoomable" src="/imgs/Overall-System-Architecture.png" alt="Overall-System-Architecture" />
 </p>
-<p><img class="img-zoomable" src="./pic/arch-color.png" alt="arch-color" />
+<p><img class="img-zoomable" src="/imgs/arch-color.png" alt="arch-color" />
 </p>
 <h3 id="目录树介绍">目录树介绍</h3>
 <pre><code>src
