@@ -34,5 +34,14 @@
       <description>&lt;p&gt;BTD-OS是一款基于 Rust 语言开发的宏内核操作系统，适用于 RISC-V64 平台。&lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title>[Docs] 文件系统优化历程</title>
+      <link>https://bitethedisk.github.io/post/fs-optimization/</link>
+      <pubDate>Thu, 17 Aug 2023 17:28:13 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/fs-optimization/</guid>
+      <description>文件系统优化历程 我们在 FAT32 设计上，采用了 rCore-Tutorial easy-fs 相同的松耦合模块化设计思路，与底层设备驱动之间通过抽象接口 BlockDevice 来连接，避免了与设备驱动的绑定。FAT32 库通过 Rust 提供的 alloc crate 来隔离了操作系统内核的内存管理，避免了</description>
+    </item>
+    
   </channel>
 </rss>
