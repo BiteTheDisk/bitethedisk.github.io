@@ -6,7 +6,16 @@
     <description>Recent content on BiteTheDisk 小站</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-hans</language>
-    <lastBuildDate>Sat, 19 Aug 2023 00:37:29 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Aug 2023 22:07:48 +0800</lastBuildDate><atom:link href="https://bitethedisk.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>历届文档整理</title>
+      <link>https://bitethedisk.github.io/post/comp-overview/</link>
+      <pubDate>Mon, 21 Aug 2023 22:07:48 +0800</pubDate>
+      
+      <guid>https://bitethedisk.github.io/post/comp-overview/</guid>
+      <description>Progressing&amp;hellip;</description>
+    </item>
+    
     <item>
       <title>[Docs] 任务控制块</title>
       <link>https://bitethedisk.github.io/post/task_control_block/</link>
